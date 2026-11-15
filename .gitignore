@@ -38,3 +38,7 @@ desktop.ini
 
 # Archivos de datos pesados o temporales (si aplican)
 *.tmp
+
+# Generados por el dashboard
+model_quantized.tflite
+state.json
