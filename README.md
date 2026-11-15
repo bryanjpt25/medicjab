@@ -18,7 +18,7 @@
 - **Denis Uscamayta:** Lead Systems & Edge AI / tinyML Architect
 - **Bryan Pereda:** Biometric Signal Processing & DSP Lead
 - **Dick Cordova:** ECLSS & Environmental Telemetry Simulator Lead
-- **Jose Huachochuilca:** Embedded Protocols, MQTT & SQLite Resiliency Specialist
+- **Jose Huachohuilca:** Embedded Protocols, MQTT & SQLite Resiliency Specialist
 - **Mariano Rodriguez:** Bio-Digital Twin & Clinical Engine Specialist
 - **Carlos Quincho:** Full-Stack Edge Dashboard & Pitch Lead
 

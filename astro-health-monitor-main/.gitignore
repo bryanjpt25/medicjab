@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+
+# Bases de datos generadas al ejecutar
+*.db
+*.db-wal
+*.db-shm
+local_buffer.db*
+state.json
+
+# Modelo generado por el código de Denis (se recrea solo)
+model_quantized.tflite
