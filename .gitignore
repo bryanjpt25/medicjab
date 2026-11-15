@@ -26,7 +26,10 @@ ENV/
 # Archivos de registros y bases de datos temporales
 *.log
 *.sqlite3
+*.db
 *.db-journal
+*.db-shm
+*.db-wal
 
 # Archivos de sistema operativo
 .DS_Store

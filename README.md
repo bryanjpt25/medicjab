@@ -22,6 +22,17 @@
 - **Mariano Rodriguez:** Bio-Digital Twin & Clinical Engine Specialist
 - **Carlos Quincho:** Full-Stack Edge Dashboard & Pitch Lead
 
+## ⚙️ Quickstart & Local Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/bryanjpt25/medicjab.git
+cd medicjab
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
 ## ⚙️ Execution
 ```bash
 pip install -r requirements.txt
