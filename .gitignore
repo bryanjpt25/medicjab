@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ccache y archivos temporales de Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Entornos virtuales (Virtual Environments)
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# Configuración de editores e IDEs (VS Code, PyCharm)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de registros y bases de datos temporales
+*.log
+*.sqlite3
+*.db-journal
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de datos pesados o temporales (si aplican)
+*.tmp
