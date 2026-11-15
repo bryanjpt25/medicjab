@@ -12,6 +12,7 @@ import contextlib
 import json
 import logging
 from pathlib import Path
+from typing import Any, Optional
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -89,6 +90,12 @@ class NameIn(BaseModel):
     name: str
 
 
+class IngestIn(BaseModel):
+    crew_id: Optional[str] = None
+    timestamp: Optional[str] = None
+    psych: Optional[dict[str, Any]] = None
+
+
 def _act(fn, *args):
     try:
         fn(*args)
@@ -138,6 +145,26 @@ def set_orbit(body: NameIn):
 @app.post("/api/reset")
 def reset():
     return _act(rt.reset_all)
+
+
+# =========================================================================
+# NUEVA RUTA: Recibir la evaluación mental desde el frontend
+# =========================================================================
+@app.post("/api/ingest")
+def ingest_psych_test(body: IngestIn):
+    """
+    Recibe los puntajes del PHQ-9 / GAD-7 desde evaluacion.html.
+    Aquí puedes guardar los datos en tu base de datos, pasarlos al runtime
+    o simplemente imprimirlos en la consola para ver que funcionó.
+    """
+    log.info(f"Recibida evaluación mental para {body.crew_id}: {body.psych}")
+    
+    # Ejemplo: si tu runtime tiene un método para actualizar el estado mental, lo llamamos aquí.
+    # if rt and hasattr(rt, "update_mental_state"):
+    #     rt.update_mental_state(body.psych)
+    #     wake.set()
+    
+    return {"ok": True, "message": "Evaluación mental procesada correctamente"}
 
 
 @app.websocket("/ws")

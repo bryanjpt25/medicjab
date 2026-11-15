@@ -6,6 +6,34 @@
   <meta name="description" content="Prototipo de monitoreo fisiológico para misiones espaciales." />
   <title>Astro Health Monitor - Escaneo Anatómico 3D</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <!-- Añadimos un pequeño estilo para el botón del test mental -->
+  <style>
+    .btn-test-mental {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #2563eb;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-family: inherit;
+      border: 1px solid #3b82f6;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    .btn-test-mental:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+    .btn-test-mental svg {
+      width: 18px;
+      height: 18px;
+    }
+  </style>
 </head>
 <body>
 <!-- TOP BAR -->
@@ -268,6 +296,19 @@
               <div class="v-main" style="font-size: 1.35rem;"><span id="val-animo">Estable · Óptimo (9/10)</span></div>
               <div id="desc-animo" class="v-desc">Sin signos de fatiga cognitiva ni estrés de aislamiento</div>
             </div>
+            <!-- ========================================================= -->
+            <!-- AQUÍ ESTÁ EL BOTÓN AGREGADO -->
+            <!-- ========================================================= -->
+            <a href="/evaluacion.html" class="btn-test-mental">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+                <path d="M12 12 2.1 9.1"/>
+                <path d="m12 12 3.9 7.8"/>
+              </svg>
+              Iniciar Evaluación Mental (PHQ-9 / GAD-7)
+            </a>
+            <!-- ========================================================= -->
+
           </div>
 
           <div id="card-rad" class="v-card">
