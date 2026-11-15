@@ -1,7 +1,17 @@
-streamlit>=1.30.0
-plotly>=5.18.0
+# --- Servidor / API (nuevo) ---
+fastapi>=0.110
+uvicorn[standard]>=0.27
+
+# --- Proyecto A (motores) ---
 numpy>=1.24.0
 pandas>=2.0.0
 scipy>=1.11.0
-paho-mqtt>=1.6.1
-tensorflow-cpu>=2.14.0
+pydantic>=2.5          # gemelo bio-digital (twin.py)
+pyyaml>=6.0            # rules.yaml
+statsmodels>=0.14      # twin.py lo importa (faltaba en el requirements.txt original del Proyecto A)
+paho-mqtt>=1.6.1       # opcional: gateway MQTT (necesita Mosquitto); sin él se usa SQLite local
+# tensorflow-cpu>=2.14.0   # opcional: IA TFLite (descomentar para activarla)
+
+# --- Consola Streamlit original (opcional) ---
+streamlit>=1.30.0
+plotly>=5.18.0

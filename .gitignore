@@ -42,3 +42,8 @@ desktop.ini
 # Generados por el dashboard
 model_quantized.tflite
 state.json
+
+# Generados por el backend unificado
+data/*.db
+data/*.db-*
+models/*.tflite
