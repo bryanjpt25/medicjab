@@ -26,14 +26,15 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/bryanjpt25/medicjab.git
+git clone [https://github.com/bryanjpt25/medicjab.git](https://github.com/bryanjpt25/medicjab.git)
 cd medicjab
 
-# Create virtual environment
+# Create & activate virtual environment
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-## ⚙️ Execution
-```bash
-pip install -r requirements.txt
-streamlit run app.py
+# Install all dependencies
+python -m pip install -r requirements.txt
+
+# Run the Streamlit Dashboard
+python -m streamlit run app.py
