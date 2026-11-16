@@ -17,53 +17,53 @@ DISTANCE_LOG_SPAN = 8.7
 
 # Catálogos
 ZONES = [
-    {"min": 0.0, "max": 100.0, "name": "Atmósfera / ascenso", "color": "#f59e0b"},
-    {"min": 100.0, "max": 1300.0, "name": "Órbita baja (LEO / ISS)", "color": "#38bdf8"},
-    {"min": 1300.0, "max": 9500.0, "name": "Cinturón de Van Allen interno", "color": "#ef4444"},
-    {"min": 9500.0, "max": 13000.0, "name": "Ranura entre cinturones", "color": "#84cc16"},
-    {"min": 13000.0, "max": 30000.0, "name": "Cinturón de Van Allen externo", "color": "#f97316"},
-    {"min": 30000.0, "max": 57000.0, "name": "Órbita alta (MEO/GEO)", "color": "#a78bfa"},
-    {"min": 57000.0, "max": 450000.0, "name": "Espacio cislunar (Luna)", "color": "#e2e8f0"},
-    {"min": 450000.0, "max": 5.0e6, "name": "Espacio profundo (L1/L2)", "color": "#22d3ee"},
-    {"min": 5.0e6, "max": 1.0e12, "name": "Tránsito interplanetario (Marte)", "color": "#f472b6"},
+    {"min": 0.0, "max": 100.0, "name": "Atmosphere / Ascent", "color": "#f59e0b"},
+    {"min": 100.0, "max": 1300.0, "name": "Low Earth Orbit (LEO / ISS)", "color": "#38bdf8"},
+    {"min": 1300.0, "max": 9500.0, "name": "Inner Van Allen Belt", "color": "#ef4444"},
+    {"min": 9500.0, "max": 13000.0, "name": "Slot between belts", "color": "#84cc16"},
+    {"min": 13000.0, "max": 30000.0, "name": "Outer Van Allen Belt", "color": "#f97316"},
+    {"min": 30000.0, "max": 57000.0, "name": "High Orbit (MEO/GEO)", "color": "#a78bfa"},
+    {"min": 57000.0, "max": 450000.0, "name": "Cislunar space (Moon)", "color": "#e2e8f0"},
+    {"min": 450000.0, "max": 5.0e6, "name": "Deep space (L1/L2)", "color": "#22d3ee"},
+    {"min": 5.0e6, "max": 1.0e12, "name": "Interplanetary transit (Mars)", "color": "#f472b6"},
 ]
 
 LANDMARKS = [
     ["Kármán", 100.0], ["ISS", 420.0], ["GPS", 20200.0], ["GEO", 35786.0],
-    ["Luna", 378000.0], ["L2", 1.5e6], ["Marte mín.", 54.6e6], ["Marte prom.", 225.0e6],
+    ["Moon", 378000.0], ["L2", 1.5e6], ["Mars min.", 54.6e6], ["Mars avg.", 225.0e6],
 ]
 
 SHIPS = {
     "ORION-7": {"color": "#e5e7eb", "gcr": 1.00, "trapped": 1.00, "spe": 1.00, "g": 0.0,
-                "note": "Estándar: casco de aluminio con blindaje mixto."},
+                "note": "Standard: aluminum hull with composite shielding."},
     "AEGIS-X": {"color": "#3b82f6", "gcr": 0.80, "trapped": 0.50, "spe": 0.35, "g": 0.0,
-                "note": "Blindaje reforzado con polietileno y pared de agua."},
+                "note": "Reinforced shielding with polyethylene and water wall."},
     "HELIOS-R": {"color": "#ef4444", "gcr": 0.97, "trapped": 0.90, "spe": 0.70, "g": 0.38,
-                 "note": "Hábitat rotatorio: gravedad artificial de 0.38 g (ideal para Marte)."},
+                 "note": "Rotating habitat: artificial gravity of 0.38 g (ideal for Mars)."},
     "SOLARIS-G": {"color": "#f59e0b", "gcr": 0.95, "trapped": 0.80, "spe": 0.20, "g": 0.0,
-                  "note": "Refugio blindado contra tormentas solares."},
+                  "note": "Armored shelter against solar storms."},
     "NOX-D": {"color": "#6b7280", "gcr": 1.10, "trapped": 1.30, "spe": 1.40, "g": 0.0,
-              "note": "Casco ligero: menos masa, menos protección."},
+              "note": "Light hull: less mass, less protection."},
 }
 
 SUITS = {
-    "Clásico": {"kpa": 29.6, "stiff": 0.30, "note": "Traje de 29.6 kPa: ágil, pero exige pre-respirar O₂."},
-    "Intermedio": {"kpa": 41.4, "stiff": 0.50, "note": "41.4 kPa: menos pre-respiración, más rigidez."},
-    "Alta presión": {"kpa": 57.2, "stiff": 0.75, "note": "57.2 kPa: casi sin riesgo de descompresión, muy rígido."},
+    "Classic": {"kpa": 29.6, "stiff": 0.30, "note": "29.6 kPa suit: agile, but requires O2 pre-breathing."},
+    "Intermediate": {"kpa": 41.4, "stiff": 0.50, "note": "41.4 kPa: less pre-breathing, more stiffness."},
+    "High pressure": {"kpa": 57.2, "stiff": 0.75, "note": "57.2 kPa: almost no decompression risk, very stiff."},
 }
 
 SEX = {
-    "hombre": {"cancer": 1.00, "ortho": 1.00},
-    "mujer": {"cancer": 1.35, "ortho": 1.45},
+    "male": {"cancer": 1.00, "ortho": 1.00},
+    "female": {"cancer": 1.35, "ortho": 1.45},
 }
 
 CATEGORIES = {
-    1: "Fisiología interna y defensas",
-    2: "Gravedad, huesos, equilibrio y visión",
-    3: "Presión, oxígeno y caminatas espaciales",
-    4: "Mente, sueño, equipo y soporte técnico",
+    1: "Internal physiology and defenses",
+    2: "Gravity, bones, balance and vision",
+    3: "Pressure, oxygen and spacewalks",
+    4: "Mind, sleep, team and technical support",
 }
-CAT_SHORT = {1: "Defensas y corazón", 2: "Huesos y visión", 3: "Presión y EVA", 4: "Mente y sueño"}
+CAT_SHORT = {1: "Defenses & heart", 2: "Bones & vision", 3: "Pressure & EVA", 4: "Mind & sleep"}
 
 CONFIG = {
     "zones": ZONES, "landmarks": LANDMARKS, "ships": SHIPS, "suits": SUITS,
@@ -234,8 +234,8 @@ def analyze_mission_telemetry(params: dict) -> dict:
     phase = params.get("phase", "orbita")
     if phase not in ("ascenso", "orbita", "reentrada"): phase = "orbita"
     ship = SHIPS.get(params.get("ship", "ORION-7"), SHIPS["ORION-7"])
-    suit = SUITS.get(params.get("suit", "Clásico"), SUITS["Clásico"])
-    sex = SEX.get(params.get("sex", "hombre"), SEX["hombre"])
+    suit = SUITS.get(params.get("suit", "Classic"), SUITS["Classic"])
+    sex = SEX.get(params.get("sex", "male"), SEX["male"])
 
     zone_idx, zone = zone_for(alt_km)
     
@@ -297,35 +297,35 @@ def analyze_mission_telemetry(params: dict) -> dict:
         eng_pts.append(pts)
 
     if alt_km < 80 and dyn_press_kpa > 35.0:
-        anom("AERO_MAX_Q_EXCEEDED", "CRÍTICA", f"Presión dinámica ({dyn_press_kpa:.2f} kPa) supera el límite estructural (35 kPa).", 35)
+        anom("AERO_MAX_Q_EXCEEDED", "CRITICAL", f"Dynamic pressure ({dyn_press_kpa:.2f} kPa) exceeds structural limit (35 kPa).", 35)
     elif 150.0 <= alt_km <= 600.0 and (0.5 * rho * ((vel_kms * 1000.0) ** 2)) * (f107 / 150.0) > 5e-4:
-        anom("ORBITAL_DRAG_SPIKE", "ADVERTENCIA", f"Arrastre atmosférico elevado. La atmósfera se expandió por el flujo solar (F10.7={f107:.0f}).", 20)
+        anom("ORBITAL_DRAG_SPIKE", "WARNING", f"High atmospheric drag. The atmosphere expanded due to solar flux (F10.7={f107:.0f}).", 20)
 
     if rad["saa_index"] > 0.50 and 180.0 < alt_km < 3000.0:
-        anom("GEOMAG_SAA_TRANSIT", "ALTA", f"Tránsito por la Anomalía del Atlántico Sur (SAA). Índice {rad['saa_index']:.2f} ({rad['saa']:.0f} µSv/h). Riesgo de fallos lógicos en aviónica por partículas (SEU). Apagar equipos no esenciales.", 30)
+        anom("GEOMAG_SAA_TRANSIT", "HIGH", f"Transit through the South Atlantic Anomaly (SAA). Index {rad['saa_index']:.2f} ({rad['saa']:.0f} µSv/h). Risk of avionics logic failures due to particles (SEU). Turn off non-essential equipment.", 30)
 
     if rad["belts"] > 500.0:
         crit = rad["belts"] > 2000.0
-        anom("VAN_ALLEN_DWELL", "CRÍTICA" if crit else "ALTA", f"Exposición a Cinturón de Van Allen: {rad['belts']:.0f} µSv/h. Los electrones/protones atrapados dañan la electrónica. Cruzar rápido o usar blindaje pesado.", 60 if crit else 35)
+        anom("VAN_ALLEN_DWELL", "CRITICAL" if crit else "HIGH", f"Exposure to Van Allen Belt: {rad['belts']:.0f} µSv/h. Trapped electrons/protons damage electronics. Cross quickly or use heavy shielding.", 60 if crit else 35)
 
     if kp >= 6.0 and abs(lat_deg) >= 55.0 and alt_km < MAGNETOPAUSE_ALT_KM:
-        anom("SOLAR_POLAR_BREACH", "CRÍTICA", f"Tormenta geomagnética (Kp={kp:.1f}) en cúspide polar. El escudo magnético se abre, atenuando enlaces de radio y permitiendo radiación.", 35)
+        anom("SOLAR_POLAR_BREACH", "CRITICAL", f"Geomagnetic storm (Kp={kp:.1f}) at polar cusp. The magnetic shield opens, attenuating radio links and allowing radiation.", 35)
 
     if spe_level >= 2 and rad["spe"] > 300.0:
         crit = acute_72h_msv >= 250.0
-        anom("SOLAR_PARTICLE_EVENT", "CRÍTICA" if crit else "ALTA", f"Tormenta de partículas solares (Nivel {spe_level}): {rad['spe']:.0f} µSv/h adicionales. Apagar sistemas no vitales, refugiarse en el módulo más blindado.", 60 if crit else 25)
+        anom("SOLAR_PARTICLE_EVENT", "CRITICAL" if crit else "HIGH", f"Solar particle storm (Level {spe_level}): {rad['spe']:.0f} µSv/h additional. Turn off non-vital systems, take shelter in the most shielded module.", 60 if crit else 25)
 
-    if co2 > 3.5: anom("ECLSS_CO2_HIGH", "ALTA", f"ppCO₂ en {co2:.1f} mmHg excede el máximo (3.0 mmHg). Fallo en los depuradores (scrubbers).", 25)
-    if press < 90.0 and ppo2 < 18.5: anom("ECLSS_DEPRESSURIZATION", "CRÍTICA", f"Presión de cabina en {press:.1f} kPa. Fuga activa detectada. Poner máscaras de O₂ y cerrar escotillas.", 35)
-    elif press < 90.0: anom("CABIN_LOW_PRESSURE_STAGING", "INFORMATIVA", f"Cabina a {press:.1f} kPa. Baja presión controlada para preparar EVA.", 0)
-    if eva and dcs_prob >= 45.0: anom("EVA_NO_GO_DCS", "CRÍTICA", f"EVA no recomendada: riesgo de descompresión {dcs_prob:.0f}% por falta de pre-respiración.", 30)
+    if co2 > 3.5: anom("ECLSS_CO2_HIGH", "HIGH", f"ppCO₂ at {co2:.1f} mmHg exceeds maximum (3.0 mmHg). Scrubber failure.", 25)
+    if press < 90.0 and ppo2 < 18.5: anom("ECLSS_DEPRESSURIZATION", "CRITICAL", f"Cabin pressure at {press:.1f} kPa. Active leak detected. Put on O₂ masks and close hatches.", 35)
+    elif press < 90.0: anom("CABIN_LOW_PRESSURE_STAGING", "INFO", f"Cabin at {press:.1f} kPa. Controlled low pressure to prepare for EVA.", 0)
+    if eva and dcs_prob >= 45.0: anom("EVA_NO_GO_DCS", "CRITICAL", f"EVA not recommended: decompression risk {dcs_prob:.0f}% due to lack of pre-breathing.", 30)
 
     if delay_s >= 3.0:
         high = delay_s >= 60.0
-        anom("COMMS_LATENCY", "ALTA" if high else "ADVERTENCIA", f"Retardo de comunicación de {delay_s:.1f} s. La tripulación opera en completa autonomía; la Tierra no puede ayudar en emergencias inmediatas.", 20 if high else 10)
+        anom("COMMS_LATENCY", "HIGH" if high else "WARNING", f"Communication delay of {delay_s:.1f} s. The crew operates in full autonomy; Earth cannot help in immediate emergencies.", 20 if high else 10)
 
     if alt_km >= MAGNETOPAUSE_ALT_KM:
-        anom("MAGNETOSPHERE_EXIT", "INFORMATIVA", "Nave fuera de la magnetosfera terrestre. Sin escudo natural contra rayos cósmicos (GCR). Dependencia total del blindaje de la nave.", 0)
+        anom("MAGNETOSPHERE_EXIT", "INFO", "Spacecraft outside Earth's magnetosphere. No natural shield against cosmic rays (GCR). Total dependence on spacecraft shielding.", 0)
 
     eng_score = min(100, sum(eng_pts))
 
@@ -338,101 +338,101 @@ def analyze_mission_telemetry(params: dict) -> dict:
         prob = round(clamp(prob, 0.0, 100.0), 1)
         cat_probs[cat].append(prob)
         if prob < min_show: return
-        sev = ("CRÍTICA" if prob >= 70 else "ALTA" if prob >= 45 else "MODERADA" if prob >= 25 else "BAJA")
+        sev = ("CRITICAL" if prob >= 70 else "HIGH" if prob >= 45 else "MODERATE" if prob >= 25 else "LOW")
         conditions.append({"category": cat, "name": name, "probability": prob, "severity": sev, "why": why, "action": action})
 
     # 1. Fisiología interna y defensas
     stress = clamp(0.5 * workload / 100.0 + 0.3 * sleep_debt / 3.5 + 0.2 * psych_prob / 100.0)
-    cond(1, "Inmunodepresión (Herpes, EBV latente)", sat(days, 70.0) * (0.35 + 0.4 * mg) * (0.6 + 0.8 * stress),
-         f"El estrés ({stress * 100:.0f}%), la ingravidez y el aislamiento debilitan las defensas tras {days} días.",
-         "Monitoreo inmunológico semanal, control estricto del sueño, suplementos de Vitamina D y antivirales profilácticos si hay brotes.")
+    cond(1, "Immunosuppression (Herpes, latent EBV)", sat(days, 70.0) * (0.35 + 0.4 * mg) * (0.6 + 0.8 * stress),
+         f"Stress ({stress * 100:.0f}%), weightlessness and isolation weaken defenses after {days} days.",
+         "Weekly immune monitoring, strict sleep control, Vitamin D supplements and prophylactic antivirals if outbreaks occur.")
     
-    cond(1, "Alteración del microbioma (Disbiosis)", sat(days, 90.0) * (0.45 + 0.35 * mg),
-         "El confinamiento extremo y la dieta de tubo alteran la flora intestinal y cutánea.",
-         "Dieta rica en fibra prebiótica, probióticos liofilizados, limpieza con toallitas antimicrobianas (sin alcohol).")
+    cond(1, "Microbiome alteration (Dysbiosis)", sat(days, 90.0) * (0.45 + 0.35 * mg),
+         "Extreme confinement and tube diet alter intestinal and skin flora.",
+         "Diet rich in prebiotic fiber, freeze-dried probiotics, cleaning with antimicrobial wipes (alcohol-free).")
 
-    cond(1, "Corazón esférico, arritmias y trombosis", sat(days, 170.0) * mg * (0.9 + 0.5 * min(1.0, cum_msv / NASA_CAREER_LIMIT_MSV)),
-         f"Sin gravedad (g={g_eff:.2f}), el músculo cardíaco se atrofia y la sangre se acumula. Riesgo alto de coágulos.",
-         "Ejercicio aeróbico intenso (cinta con arnés) 1h/día, medias de compresión neumática, ecografías Doppler mensuales.")
+    cond(1, "Spherical heart, arrhythmias and thrombosis", sat(days, 170.0) * mg * (0.9 + 0.5 * min(1.0, cum_msv / NASA_CAREER_LIMIT_MSV)),
+         f"Without gravity (g={g_eff:.2f}), the heart muscle atrophies and blood pools. High risk of clots.",
+         "Intense aerobic exercise (treadmill with harness) 1h/day, pneumatic compression stockings, monthly Doppler ultrasounds.")
 
     if phase == "reentrada":
-        cond(1, "Hipotensión ortostática (Desmayo al aterrizar)", sat(days, 12.0) * mg * sex["ortho"],
-             "El cuerpo olvidó cómo bombear sangre contra la gravedad. Al ponerse de pie, la presión cae en picada.",
-             "Traje anti-G (pantalones de compresión), ingesta masiva de sal y agua (1.5L) 2 horas antes del aterrizaje, salida en camilla.")
+        cond(1, "Orthostatic hypotension (Fainting upon landing)", sat(days, 12.0) * mg * sex["ortho"],
+             "The body forgot how to pump blood against gravity. Upon standing, pressure drops sharply.",
+             "Anti-G suit (compression pants), massive salt and water intake (1.5L) 2 hours before landing, stretcher exit.")
 
-    cond(1, "Cáncer por radiación acumulada", limit_pct * sex["cancer"],
-         f"Dosis acumulada ≈ {cum_msv:.0f} mSv ({limit_pct:.0f}% del límite NASA). Riesgo adicional de cáncer ≈ {cancer_added_pct:.1f}%.",
-         "Uso de refugio blindado (tormentas), limitar EVA en órbita alta, y rotación de tripulación si el límite se acerca al 100%.")
+    cond(1, "Cancer from accumulated radiation", limit_pct * sex["cancer"],
+         f"Accumulated dose ≈ {cum_msv:.0f} mSv ({limit_pct:.0f}% of NASA limit). Additional cancer risk ≈ {cancer_added_pct:.1f}%.",
+         "Use of shielded shelter (storms), limit EVA in high orbit, and crew rotation if limit approaches 100%.")
 
-    cond(1, "Síndrome de Irradiación Aguda (ARS)", acute_72h_msv / 700.0 * 100.0,
-         f"Dosis a 72h sería ≈ {acute_72h_msv:.0f} mSv (síntomas a partir de 700 mSv). Náuseas, vómito y caída de glóbulos blancos.",
-         "Refugio inmediato, antieméticos (Zofran), monitoreo de hemograma cada 6h, aislamiento para evitar infecciones.")
+    cond(1, "Acute Radiation Syndrome (ARS)", acute_72h_msv / 700.0 * 100.0,
+         f"72h dose would be ≈ {acute_72h_msv:.0f} mSv (symptoms from 700 mSv). Nausea, vomiting and white blood cell drop.",
+         "Immediate shelter, antiemetics (Zofran), blood count monitoring every 6h, isolation to prevent infections.")
 
     # 2. Gravedad, huesos, equilibrio y visión
-    cond(2, "SANS (Síndrome Neuro-ocular)", sans_pct,
-         f"Fluidos hacia la cabeza + CO₂ ({co2:.1f} mmHg) causan edema en el nervio óptico y aplanamiento del globo ocular.",
-         "Traje de presión negativa en piernas (LBNP) 2h/día, medir presión intraocular, usar lentes de contacto ajustables, bajar CO₂.")
+    cond(2, "SANS (Neuro-ocular Syndrome)", sans_pct,
+         f"Fluids to the head + CO₂ ({co2:.1f} mmHg) cause optic nerve edema and eyeball flattening.",
+         "Lower body negative pressure (LBNP) suit 2h/day, measure intraocular pressure, use adjustable contact lenses, lower CO₂.")
 
     sms = mg * 100.0 * 0.7 * math.exp(-days / 4.0)
     readapt = 100.0 * mg * 0.85 * (1.0 - math.exp(-days / 10.0)) if phase == "reentrada" else 0.0
-    vest_why = "Vértigo intenso al intentar caminar o pilotar tras el aterrizaje." if readapt >= sms else "Náuseas, sudoración fría y desorientación en los primeros días de vuelo."
-    cond(2, "Mareo espacial y pérdida de coordinación", max(sms, readapt), vest_why,
-         "Movimientos lentos de cabeza, antieméticos (Prometazina), entrenamiento en silla giratoria, prohibir pilotar en las primeras 24h post-aterrizaje.")
+    vest_why = "Intense vertigo when trying to walk or pilot after landing." if readapt >= sms else "Nausea, cold sweats and disorientation in the first days of flight."
+    cond(2, "Space motion sickness and loss of coordination", max(sms, readapt), vest_why,
+         "Slow head movements, antiemetics (Promethazine), spinning chair training, prohibit piloting in the first 24h post-landing.")
 
-    cond(2, "Osteopenia (Huesos frágiles)", bone_loss_pct * 14.0,
-         f"Pérdida de {bone_loss_pct:.1f}% de masa ósea en cadera/pelvis. Riesgo altísimo de fractura en impactos.",
-         "Dispositivo de ejercicio resistivo (ARED) 2h/día obligatorio, suplementos de Calcio + Vitamina D, escaneo DEXA al retornar.")
+    cond(2, "Osteopenia (Fragile bones)", bone_loss_pct * 14.0,
+         f"Loss of {bone_loss_pct:.1f}% bone mass in hip/pelvis. Extremely high risk of fracture on impact.",
+         "Resistive exercise device (ARED) 2h/day mandatory, Calcium + Vitamin D supplements, DEXA scan upon return.")
 
-    cond(2, "Atrofia muscular", muscle_loss_pct * 4.5,
-         f"Pérdida de {muscle_loss_pct:.1f}% de masa muscular. Fatiga rápida y pérdida de fuerza para EVA.",
-         "Ejercicio anaeróbico, dieta hiperproteica (1.5g/kg), uso de exoesqueletos suaves si la gravedad artificial es nula.")
+    cond(2, "Muscle atrophy", muscle_loss_pct * 4.5,
+         f"Loss of {muscle_loss_pct:.1f}% muscle mass. Rapid fatigue and loss of strength for EVA.",
+         "Anaerobic exercise, high-protein diet (1.5g/kg), use of soft exoskeletons if artificial gravity is zero.")
 
     # 3. Presión, oxígeno y caminatas espaciales
     if eva:
-        cond(3, "Enfermedad por Descompresión (DCS)", dcs_prob,
-             f"N₂ en tejido/presión del traje = {dcs_ratio:.2f} (umbral 1.65). Pre-respiración de {prebreathe:.0f} min es insuficiente.",
-             "Abortar EVA. Pre-respirar O₂ al 100% por 4 horas (o usar ejercicio para acelerar purga de N₂). Oxígeno hiperbárico si hay dolor articular.", min_show=0.0)
+        cond(3, "Decompression Sickness (DCS)", dcs_prob,
+             f"N₂ in tissue/suit pressure = {dcs_ratio:.2f} (threshold 1.65). Pre-breathing of {prebreathe:.0f} min is insufficient.",
+             "Abort EVA. Pre-breathe 100% O₂ for 4 hours (or use exercise to accelerate N₂ purge). Hyperbaric oxygen if joint pain occurs.", min_show=0.0)
 
-    cond(3, "Hipoxia (Falta de O₂ tisular)", hyp_prob,
-         f"ppO₂ en cabina = {ppo2:.1f} kPa (normal 21). Afecta la cognición y visión.",
-         "Subir fracción de O₂, usar mascarillas suplementarias, revisar generadores de O₂ (OGS).", min_show=5.0)
+    cond(3, "Hypoxia (Tissue O₂ deficiency)", hyp_prob,
+         f"Cabin ppO₂ = {ppo2:.1f} kPa (normal 21). Affects cognition and vision.",
+         "Increase O₂ fraction, use supplemental masks, check O₂ generators (OGS).", min_show=5.0)
 
-    cond(3, "Hipercapnia (Intoxicación por CO₂)", co2_prob,
-         f"ppCO₂ de {co2:.1f} mmHg. Provoca dolores de cabeza punzantes y letargo extremo.",
-         "Reemplazar cartuchos de hidróxido de litio (LiOH), ventilar módulos, reducir actividad física a mínimo.", min_show=8.0)
+    cond(3, "Hypercapnia (CO₂ poisoning)", co2_prob,
+         f"ppCO₂ of {co2:.1f} mmHg. Causes sharp headaches and extreme lethargy.",
+         "Replace lithium hydroxide (LiOH) cartridges, ventilate modules, reduce physical activity to minimum.", min_show=8.0)
 
     if eva:
         eva_prob = 100.0 * clamp(0.35 * workload / 100.0 + 0.20 * suit["stiff"] + 0.20 * hyp_prob / 100.0 + 0.15 * co2_prob / 100.0 + 0.10 * sleep_debt / 3.5)
-        cond(3, "Fatiga cognitiva en EVA", eva_prob,
-             f"Rigidez del traje ({suit['stiff']*100:.0f}%), carga de trabajo {workload:.0f}%. El traje consume mucha energía física.",
-             "Tareas cortas con descansos de 10 min por hora. Checklists verbales por radio. Compañero de seguridad (buddy system) observando fatiga.", min_show=0.0)
+        cond(3, "Cognitive fatigue during EVA", eva_prob,
+             f"Suit stiffness ({suit['stiff']*100:.0f}%), workload {workload:.0f}%. The suit consumes a lot of physical energy.",
+             "Short tasks with 10-min breaks per hour. Verbal checklists by radio. Buddy system observing fatigue.", min_show=0.0)
 
     if alt_km < 100.0 and phase in ("ascenso", "reentrada"):
-        cond(3, "Sobrecarga G e intolerancia ortostática", clamp(dyn_press_kpa / 35.0) * 85.0,
-             f"Presión dinámica de {dyn_press_kpa:.1f} kPa. Fuerzas G extremas comprimen el tórax.",
-             "Respiración AGS (Anti-G Straining Maneuver), asiento reclinado, traje anti-G presurizado.", min_show=10.0)
+        cond(3, "G overload and orthostatic intolerance", clamp(dyn_press_kpa / 35.0) * 85.0,
+             f"Dynamic pressure of {dyn_press_kpa:.1f} kPa. Extreme G forces compress the chest.",
+             "AGS (Anti-G Straining Maneuver) breathing, reclined seat, pressurized anti-G suit.", min_show=10.0)
 
     # 4. Mente, sueño, equipo y soporte técnico (CRÍTICO EN MARTE)
-    cond(4, "Depresión y estrés por aislamiento", psych_prob,
-         f"{days} días confinados, tripulación de {crew}. Distancia retardo mental por los {delay_s:.1f} s de latencia con la Tierra.",
-         "Sesiones psicológicas semanales (con retardo), contacto familiar privado, mantener rutinas diarias estrictas y celebraciones a bordo.")
+    cond(4, "Depression and stress from isolation", psych_prob,
+         f"{days} days confined, crew of {crew}. Mental distance delay due to {delay_s:.1f} s latency with Earth.",
+         "Weekly psychological sessions (with delay), private family contact, maintain strict daily routines and onboard celebrations.")
 
     if earth_out_of_view:
-        cond(4, "Desapego (Earth-out-of-view)", min(95.0, 25.0 + 22.0 * math.log10(1.0 + delay_s)),
-             f"La Tierra mide solo {earth_deg:.3g}° en el cielo. Es un punto. Los astronautas reportan una soledad profunda y existencial.",
-             "Usar Realidad Virtual inmersiva con paisajes terrestres, ventanas virtuales, escribir diarios, mantener contacto con la familia programado.")
+        cond(4, "Detachment (Earth-out-of-view)", min(95.0, 25.0 + 22.0 * math.log10(1.0 + delay_s)),
+             f"Earth is only {earth_deg:.3g}° in the sky. It is a dot. Astronauts report profound and existential loneliness.",
+             "Use immersive Virtual Reality with terrestrial landscapes, virtual windows, write diaries, maintain scheduled family contact.")
 
-    cond(4, "Tensión interpersonal y fallos de equipo", team_prob,
-         f"Tripulación de {crew}, retardo de {delay_s:.1f} s y déficit de sueño de {sleep_debt:.1f} h. Conflictos por espacios reducidos.",
-         "Entrenamiento en resolución de conflictos, rotación de tareas domésticas, tener un 'mediador' designado, dar espacio personal (hipocresía de ruido).")
+    cond(4, "Interpersonal tension and equipment failures", team_prob,
+         f"Crew of {crew}, delay of {delay_s:.1f} s and sleep deficit of {sleep_debt:.1f} h. Conflicts over cramped spaces.",
+         "Conflict resolution training, rotation of household tasks, having a designated 'mediator', giving personal space (noise hypocrisy).")
 
-    cond(4, "Pérdida crónica de sueño y fatiga", sleep_prob,
-         f"Duermen {sleep_h:.1f} h/día. " + ("En LEO ven 16 amaneceres/día, desajustando el ritmo circadiano." if 100.0 <= alt_km < 2000.0 else "Sin ciclo día/noche natural, el cerebro pierde la noción del tiempo."),
-         "Iluminación circadiana (azul 480nm de día, ámbar de noche), melatonina, horarios fijos, tapones para oídos y antifaces.")
+    cond(4, "Chronic sleep loss and fatigue", sleep_prob,
+         f"They sleep {sleep_h:.1f} h/day. " + ("In LEO they see 16 sunrises/day, disrupting circadian rhythm." if 100.0 <= alt_km < 2000.0 else "Without a natural day/night cycle, the brain loses track of time."),
+         "Circadian lighting (480nm blue by day, amber at night), melatonin, fixed schedules, earplugs and sleep masks.")
 
-    cond(4, "Dependencia autónoma de soporte vital", autonomy_need,
-         f"Con {delay_s:.1f} s de retardo, la Tierra no puede guiar. Si hay una fuga o fallo médico, la tripulación está sola.",
-         "Protocolos de emergencia a bordo, manuales de reparación, asistente de IA a bordo, repuestos redundantes (impresión 3D).", min_show=15.0)
+    cond(4, "Autonomous life support dependency", autonomy_need,
+         f"With {delay_s:.1f} s delay, Earth cannot guide. If there is a leak or medical failure, the crew is alone.",
+         "Onboard emergency protocols, repair manuals, onboard AI assistant, redundant spare parts (3D printing).", min_show=15.0)
 
     conditions.sort(key=lambda c: (c["category"], -c["probability"]))
 
@@ -449,7 +449,7 @@ def analyze_mission_telemetry(params: dict) -> dict:
         "water_l": round(water_needed, 1),
         "med_kits": math.ceil(days / 30.0), # 1 botiquín por mes
         "resupply_possible": resupply_possible,
-        "status": "CRÍTICO: Misión sin retorno" if not resupply_possible else "Nominal: Posible reabastecimiento"
+        "status": "CRITICAL: One-way mission" if not resupply_possible else "Nominal: Resupply possible"
     }
 
     domains = []
@@ -459,9 +459,9 @@ def analyze_mission_telemetry(params: dict) -> dict:
     scores = [d["score"] for d in domains]
     med_score = round(0.6 * max(scores) + 0.4 * (sum(scores) / len(scores)))
     risk_score = int(min(100, round(0.7 * max(eng_score, med_score) + 0.3 * min(eng_score, med_score))))
-    if any(a["severity"] == "CRÍTICA" for a in anomalies) or not resupply_possible:
+    if any(a["severity"] == "CRITICAL" for a in anomalies) or not resupply_possible:
         risk_score = max(risk_score, 60)
-    status = "CRÍTICO" if risk_score >= 60 else ("PRECAUCIÓN" if risk_score >= 25 else "NOMINAL")
+    status = "CRITICAL" if risk_score >= 60 else ("CAUTION" if risk_score >= 25 else "NOMINAL")
 
     return {
         "status": status, "risk_score": risk_score, "engineering_score": eng_score, "medical_score": med_score,
@@ -501,11 +501,11 @@ def fmt_time(seconds: float) -> str:
 # INTERFAZ WEB
 # ==============================================================================
 HTML_DASHBOARD = r"""<!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NASA Space Apps · Monitor Bio-Orbital (Distancia y Salud)</title>
+<title>NASA Space Apps · Bio-Orbital Monitor (Distance & Health)</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -588,10 +588,10 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
 
   .cat-head { display: flex; justify-content: space-between; margin: 14px 0 6px; font-weight: 700; color: var(--ice); border-bottom: 1px solid #12395a; padding-bottom: 4px; font-size: .98rem; }
   .cond { padding: 9px 11px; border-radius: 4px; margin-bottom: 8px; border-left: 4px solid; background: rgba(10,26,46,.8); }
-  .cond.CRITICA { border-color: #ef4444; background: rgba(220,38,38,.15); }
-  .cond.ALTA { border-color: #f97316; background: rgba(249,115,22,.13); }
-  .cond.MODERADA { border-color: #f59e0b; background: rgba(245,158,11,.11); }
-  .cond.BAJA { border-color: #38bdf8; }
+  .cond.CRITICAL { border-color: #ef4444; background: rgba(220,38,38,.15); }
+  .cond.HIGH { border-color: #f97316; background: rgba(249,115,22,.13); }
+  .cond.MODERATE { border-color: #f59e0b; background: rgba(245,158,11,.11); }
+  .cond.LOW { border-color: #38bdf8; }
   .cond-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
   .cond-top strong { font-size: 1rem; line-height: 1.2; }
   .cond-top .prob { font-weight: 700; color: var(--text); white-space: nowrap; }
@@ -604,8 +604,8 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
 <body>
   <header>
     <div>
-      <h1>🚀 NASA SPACE APPS · DISTANCIA Y SALUD ORBITAL</h1>
-      <small>Mueve la distancia para simular el impacto en suministros, radiación y protocolos médicos.<span id="src"></span></small>
+      <h1>🚀 NASA SPACE APPS · ORBITAL DISTANCE & HEALTH</h1>
+      <small>Move the distance to simulate the impact on supplies, radiation, and medical protocols.<span id="src"></span></small>
     </div>
     <div class="presets" id="presets"></div>
   </header>
@@ -614,45 +614,45 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
 
   <div class="main-grid">
     <aside class="panel side">
-      <h2>TRIPULACIÓN Y ENTORNO</h2>
-      <div class="lbl">Tripulante</div><div class="seg" id="seg_sex"></div>
-      <div class="lbl">Modelo de nave</div><div class="seg" id="seg_ship"></div><div class="note" id="ship_note"></div>
-      <div class="lbl">Estilo del traje</div><div class="seg" id="seg_suit"></div><div class="note" id="suit_note"></div>
-      <label class="switch"><input type="checkbox" id="eva"> Caminata espacial (EVA) en curso</label>
+      <h2>CREW AND ENVIRONMENT</h2>
+      <div class="lbl">Crew member</div><div class="seg" id="seg_sex"></div>
+      <div class="lbl">Spacecraft model</div><div class="seg" id="seg_ship"></div><div class="note" id="ship_note"></div>
+      <div class="lbl">Suit style</div><div class="seg" id="seg_suit"></div><div class="note" id="suit_note"></div>
+      <label class="switch"><input type="checkbox" id="eva"> Spacewalk (EVA) in progress</label>
       <div id="sliders"></div>
     </aside>
 
     <main>
       <section class="panel">
-        <h2>DISTANCIA A LA TIERRA (SIMULADOR)</h2>
+        <h2>DISTANCE TO EARTH (SIMULATOR)</h2>
         <canvas id="ruler" width="720" height="112"></canvas>
         <input id="dist_slider" type="range" min="0" max="1000" step="1" style="margin-top: 10px;">
         <div class="dist-row">
-          <label>Distancia manual <input id="dist_num" type="number" min="0" max="500000000" step="any"> km</label>
+          <label>Manual distance <input id="dist_num" type="number" min="0" max="500000000" step="any"> km</label>
           <div class="equiv" id="dist_equiv"></div>
         </div>
         <div class="zone-btns" id="zone_btns" style="margin-top: 10px;"></div>
       </section>
 
       <section class="panel">
-        <h2>VÍVERES, RECURSOS Y AUTONOMÍA</h2>
+        <h2>SUPPLIES, RESOURCES AND AUTONOMY</h2>
         <div id="supplies_panel"></div>
       </section>
 
       <section class="panel">
-        <h2>ANOMALÍAS DE INGENIERÍA Y ENTORNO</h2>
+        <h2>ENGINEERING & ENVIRONMENT ANOMALIES</h2>
         <div id="anomalies_list"></div>
       </section>
 
       <section class="panel">
-        <h2>RADIACIÓN SEGÚN LA DISTANCIA</h2>
+        <h2>RADIATION BY DISTANCE</h2>
         <canvas id="prof" width="720" height="250"></canvas>
         <div id="rad_break"></div>
       </section>
     </main>
 
     <aside class="panel health">
-      <h2>ENFERMEDADES Y PROTOCOLOS DE ACCIÓN</h2>
+      <h2>DISEASES AND ACTION PROTOCOLS</h2>
       <div class="doms" id="domains"></div>
       <div id="medical_list"></div>
     </aside>
@@ -668,9 +668,9 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
   const roundSig = (x, n) => { if (x === 0) return 0; const p = Math.pow(10, n - Math.ceil(Math.log10(Math.abs(x)))); return Math.round(x * p) / p; };
 
   function fmtKm(d) {
-    if (d >= 1e6) return (d / 1e6).toLocaleString('es', { maximumFractionDigits: d < 1e7 ? 2 : 1 }) + ' M km';
-    if (d >= 100) return Math.round(d).toLocaleString('es') + ' km';
-    return d.toLocaleString('es', { maximumFractionDigits: 1 }) + ' km';
+    if (d >= 1e6) return (d / 1e6).toLocaleString('en', { maximumFractionDigits: d < 1e7 ? 2 : 1 }) + ' M km';
+    if (d >= 100) return Math.round(d).toLocaleString('en') + ' km';
+    return d.toLocaleString('en', { maximumFractionDigits: 1 }) + ' km';
   }
   function fmtTime(s) {
     if (s < 1) return (s * 1000).toFixed(0) + ' ms';
@@ -682,49 +682,49 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
   const zoneOf = d => CFG.zones.find(z => d >= z.min && d < z.max) || CFG.zones[CFG.zones.length - 1];
 
   const DEFAULTS = { dist: 415, lat: -26, lon: -46, vel: 7.66, autoVel: true, utc: 16, f107: 165, kp: 4, spe: 0, press: 101.3, o2: 21, co2: 4.1, prebreathe: 0, eva: false, days: 65, g: 0, ex: 2, sleep: 6.5, crew: 4, work: 60, phase: 'orbita' };
-  const S = Object.assign({ sex: 'hombre', ship: 'ORION-7', suit: 'Clásico' }, DEFAULTS);
+  const S = Object.assign({ sex: 'male', ship: 'ORION-7', suit: 'Classic' }, DEFAULTS);
 
-  const SPE_LABELS = ['0 · sin evento', '1 · menor', '2 · moderado', '3 · fuerte', '4 · severo', '5 · extremo'];
+  const SPE_LABELS = ['0 · no event', '1 · minor', '2 · moderate', '3 · strong', '4 · severe', '5 · extreme'];
   const SLIDERS = [
-    { group: 'Posición y órbita', items: [
-      { id: 'lat', label: 'Latitud', min: -90, max: 90, step: 0.5, fmt: v => v.toFixed(1) + '°' },
-      { id: 'lon', label: 'Longitud', min: -180, max: 180, step: 0.5, fmt: v => v.toFixed(1) + '°' },
-      { id: 'vel', label: 'Velocidad', min: 0, max: 11.2, step: 0.05, fmt: v => v.toFixed(2) + ' km/s', extra: '<label class="chk"><input type="checkbox" id="autoVel"> Velocidad orbital automática</label>' },
-      { id: 'utc', label: 'Hora UTC', min: 0, max: 23, step: 1, fmt: v => v + ' h' } ] },
-    { group: 'Clima espacial', items: [
-      { id: 'f107', label: 'Flujo solar F10.7', min: 65, max: 300, step: 5, fmt: v => v },
-      { id: 'kp', label: 'Índice geomagnético Kp', min: 0, max: 9, step: 0.5, fmt: v => v.toFixed(1) },
-      { id: 'spe', label: 'Tormenta de partículas solares', min: 0, max: 5, step: 1, fmt: v => SPE_LABELS[v] } ] },
-    { group: 'Cabina y EVA', items: [
-      { id: 'press', label: 'Presión de cabina', min: 60, max: 105, step: 0.5, fmt: v => v.toFixed(1) + ' kPa' },
-      { id: 'o2', label: 'Oxígeno en cabina', min: 18, max: 35, step: 0.5, fmt: v => v.toFixed(1) + ' %' },
-      { id: 'co2', label: 'CO₂ de cabina', min: 0.5, max: 8, step: 0.1, fmt: v => v.toFixed(1) + ' mmHg' },
-      { id: 'prebreathe', label: 'Pre-respiración de O₂', min: 0, max: 300, step: 5, fmt: v => v + ' min' } ] },
-    { group: 'Factores Humanos', items: [
-      { id: 'days', label: 'Días en misión', min: 0, max: 900, step: 1, fmt: v => v + ' d' },
-      { id: 'g', label: 'Gravedad local', min: 0, max: 1, step: 0.01, fmt: v => v.toFixed(2) + ' g' },
-      { id: 'ex', label: 'Ejercicio diario', min: 0, max: 4, step: 0.1, fmt: v => v.toFixed(1) + ' h' },
-      { id: 'sleep', label: 'Sueño por noche', min: 3, max: 9, step: 0.1, fmt: v => v.toFixed(1) + ' h' },
-      { id: 'crew', label: 'Tamaño de la tripulación', min: 1, max: 8, step: 1, fmt: v => v },
-      { id: 'work', label: 'Carga de trabajo', min: 0, max: 100, step: 5, fmt: v => v + ' %' } ] },
+    { group: 'Position and orbit', items: [
+      { id: 'lat', label: 'Latitude', min: -90, max: 90, step: 0.5, fmt: v => v.toFixed(1) + '°' },
+      { id: 'lon', label: 'Longitude', min: -180, max: 180, step: 0.5, fmt: v => v.toFixed(1) + '°' },
+      { id: 'vel', label: 'Velocity', min: 0, max: 11.2, step: 0.05, fmt: v => v.toFixed(2) + ' km/s', extra: '<label class="chk"><input type="checkbox" id="autoVel"> Automatic orbital velocity</label>' },
+      { id: 'utc', label: 'UTC Time', min: 0, max: 23, step: 1, fmt: v => v + ' h' } ] },
+    { group: 'Space weather', items: [
+      { id: 'f107', label: 'Solar flux F10.7', min: 65, max: 300, step: 5, fmt: v => v },
+      { id: 'kp', label: 'Geomagnetic index Kp', min: 0, max: 9, step: 0.5, fmt: v => v.toFixed(1) },
+      { id: 'spe', label: 'Solar particle storm', min: 0, max: 5, step: 1, fmt: v => SPE_LABELS[v] } ] },
+    { group: 'Cabin and EVA', items: [
+      { id: 'press', label: 'Cabin pressure', min: 60, max: 105, step: 0.5, fmt: v => v.toFixed(1) + ' kPa' },
+      { id: 'o2', label: 'Cabin oxygen', min: 18, max: 35, step: 0.5, fmt: v => v.toFixed(1) + ' %' },
+      { id: 'co2', label: 'Cabin CO₂', min: 0.5, max: 8, step: 0.1, fmt: v => v.toFixed(1) + ' mmHg' },
+      { id: 'prebreathe', label: 'O₂ pre-breathing', min: 0, max: 300, step: 5, fmt: v => v + ' min' } ] },
+    { group: 'Human Factors', items: [
+      { id: 'days', label: 'Days in mission', min: 0, max: 900, step: 1, fmt: v => v + ' d' },
+      { id: 'g', label: 'Local gravity', min: 0, max: 1, step: 0.01, fmt: v => v.toFixed(2) + ' g' },
+      { id: 'ex', label: 'Daily exercise', min: 0, max: 4, step: 0.1, fmt: v => v.toFixed(1) + ' h' },
+      { id: 'sleep', label: 'Sleep per night', min: 3, max: 9, step: 0.1, fmt: v => v.toFixed(1) + ' h' },
+      { id: 'crew', label: 'Crew size', min: 1, max: 8, step: 1, fmt: v => v },
+      { id: 'work', label: 'Workload', min: 0, max: 100, step: 5, fmt: v => v + ' %' } ] },
   ];
 
   const SCEN = {
     iss: { label: '🛰️ LEO (ISS 420km)', v: { dist: 420, lat: -26, lon: -46, days: 45, crew: 4, sleep: 7, work: 50 } },
     van_allen: { label: '☢️ Van Allen', v: { dist: 3800, lat: 0, lon: -45, co2: 2.6, days: 3, ex: 1, work: 60 } },
-    moon: { label: '🌙 Luna', v: { dist: 378000, f107: 100, kp: 2, co2: 2.6, days: 12, ex: 2, sleep: 7, work: 55 } },
-    mars_transit: { label: '🔴 Tránsito a Marte', v: { dist: 225000000, f107: 110, kp: 1.5, spe: 2, co2: 3.0, days: 200, ex: 2.5, sleep: 6.5, crew: 6, work: 55, ship: 'HELIOS-R' } },
-    mars_surface: { label: '🔴 Superficie Marciana', v: { dist: 225000000, f107: 110, kp: 1.5, co2: 2.8, days: 500, ex: 2, sleep: 7, crew: 4, work: 40, g: 0.38 } }
+    moon: { label: '🌙 Moon', v: { dist: 378000, f107: 100, kp: 2, co2: 2.6, days: 12, ex: 2, sleep: 7, work: 55 } },
+    mars_transit: { label: '🔴 Transit to Mars', v: { dist: 225000000, f107: 110, kp: 1.5, spe: 2, co2: 3.0, days: 200, ex: 2.5, sleep: 6.5, crew: 6, work: 55, ship: 'HELIOS-R' } },
+    mars_surface: { label: '🔴 Martian Surface', v: { dist: 225000000, f107: 110, kp: 1.5, co2: 2.8, days: 500, ex: 2, sleep: 7, crew: 4, work: 40, g: 0.38 } }
   };
-  const ZONE_BTNS = [['ISS · 420 km', 420], ['Van Allen · 3.800 km', 3800], ['Luna · 378.000 km', 378000], ['Marte · 225 M km', 225e6]];
+  const ZONE_BTNS = [['ISS · 420 km', 420], ['Van Allen · 3,800 km', 3800], ['Moon · 378,000 km', 378000], ['Mars · 225 M km', 225e6]];
 
   function setScenario(v) { Object.assign(S, DEFAULTS, v); update(); }
   async function loadLiveNASA() {
     try {
       const d = await (await fetch('/api/live')).json();
-      $('src').textContent = ' · Fuente: ' + d.source;
+      $('src').textContent = ' · Source: ' + d.source;
       setScenario({ dist: d.altitude_km, lat: d.latitude_deg, lon: d.longitude_deg, vel: d.velocity_kms, autoVel: false, utc: new Date().getUTCHours(), f107: d.solar_flux_f107, kp: d.geomagnetic_kp, co2: 2.7, days: 45 });
-    } catch (e) { $('src').textContent = ' · No se pudo leer /api/live'; }
+    } catch (e) { $('src').textContent = ' · Could not read /api/live'; }
   }
 
   function buildControls() {
@@ -738,7 +738,7 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
     $('eva').addEventListener('change', e => { S.eva = e.target.checked; update(); });
   }
   function buildSegs() {
-    const defs = { sex: [['hombre', '👨‍🚀 Hombre'], ['mujer', '👩‍🚀 Mujer']], ship: Object.keys(CFG.ships).map(k => [k, k]), suit: Object.keys(CFG.suits).map(k => [k, k]) };
+    const defs = { sex: [['male', '👨‍🚀 Male'], ['female', '👩‍🚀 Female']], ship: Object.keys(CFG.ships).map(k => [k, k]), suit: Object.keys(CFG.suits).map(k => [k, k]) };
     Object.entries(defs).forEach(([key, arr]) => {
       const host = $('seg_' + key);
       host.innerHTML = arr.map(([v, l]) => `<button type="button" data-val="${v}">${key === 'ship' ? '<span class="dot" style="background:' + CFG.ships[v].color + '"></span>' : ''}${l}</button>`).join('');
@@ -746,7 +746,7 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
     });
   }
   function buildPresets() {
-    $('presets').innerHTML = '<button type="button" data-k="live">📡 Datos reales ISS</button>' + Object.entries(SCEN).map(([k, s]) => `<button type="button" data-k="${k}">${s.label}</button>`).join('');
+    $('presets').innerHTML = '<button type="button" data-k="live">📡 Real ISS data</button>' + Object.entries(SCEN).map(([k, s]) => `<button type="button" data-k="${k}">${s.label}</button>`).join('');
     $('presets').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { b.dataset.k === 'live' ? loadLiveNASA() : setScenario(SCEN[b.dataset.k].v); }));
     $('zone_btns').innerHTML = ZONE_BTNS.map(([l, d]) => `<button type="button" data-d="${d}">${l}</button>`).join('');
     $('zone_btns').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { S.dist = parseFloat(b.dataset.d); update(); }));
@@ -765,7 +765,7 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
     $('dist_slider').value = d2s(S.dist);
     if (document.activeElement !== $('dist_num')) $('dist_num').value = S.dist;
     const rr = (R_E + S.dist) / R_E, z = zoneOf(S.dist);
-    $('dist_equiv').innerHTML = `<span class="zone-name" style="color:${z.color}">${z.name}</span> · ${rr.toFixed(2)} radios terrestres · retardo de luz: ${fmtTime((R_E + S.dist) / C_KMS)}` + (S.dist > 1e6 ? ` · ${(S.dist / AU_KM).toFixed(3)} UA` : '');
+    $('dist_equiv').innerHTML = `<span class="zone-name" style="color:${z.color}">${z.name}</span> · ${rr.toFixed(2)} Earth radii · light delay: ${fmtTime((R_E + S.dist) / C_KMS)}` + (S.dist > 1e6 ? ` · ${(S.dist / AU_KM).toFixed(3)} AU` : '');
     ['sex', 'ship', 'suit'].forEach(k => document.querySelectorAll('#seg_' + k + ' button').forEach(b => b.classList.toggle('on', b.dataset.val === S[k])));
     $('ship_note').textContent = CFG.ships[S.ship].note; $('suit_note').textContent = CFG.suits[S.suit].note;
     ['lat', 'lon'].forEach(id => $('c_' + id).classList.toggle('dim', S.dist >= CFG.magnetopause_km));
@@ -818,50 +818,49 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
     ctx.font = '700 12px Rajdhani, sans-serif'; ctx.textAlign = mx > W * 0.7 ? 'right' : 'left';
     ctx.fillText(d.radiation.total.toFixed(d.radiation.total < 100 ? 1 : 0) + ' µSv/h', mx + (mx > W * 0.7 ? -9 : 9), Math.max(y0 + 8, my - 10));
     ctx.font = '600 11px Rajdhani, sans-serif'; ctx.textAlign = 'left';
-    ctx.fillStyle = '#22d3ee'; ctx.fillText('— a la latitud actual', x0 + 8, y0 + 10);
-    ctx.fillStyle = '#7c8da3'; ctx.fillText('- - sobre el ecuador', x0 + 8, y0 + 24);
+    ctx.fillStyle = '#22d3ee'; ctx.fillText('— at current latitude', x0 + 8, y0 + 10);
+    ctx.fillStyle = '#7c8da3'; ctx.fillText('- - over the equator', x0 + 8, y0 + 24);
 
     const r = d.radiation, tot = Math.max(r.total, 1e-9);
-    const parts = [['Rayos cósmicos', '#38bdf8', r.gcr], ['Cinturones', '#f97316', r.belts], ['SAA', '#ef4444', r.saa], ['Tormenta solar', '#facc15', r.spe]];
+    const parts = [['Cosmic rays', '#38bdf8', r.gcr], ['Belts', '#f97316', r.belts], ['SAA', '#ef4444', r.saa], ['Solar storm', '#facc15', r.spe]];
     $('rad_break').innerHTML = `<div class="stack">${parts.map(p => `<i style="width:${(p[2] / tot * 100).toFixed(1)}%;background:${p[1]}"></i>`).join('')}</div>
       <div class="legend">${parts.map(p => `<span><i class="sw" style="background:${p[1]}"></i>${p[0]} ${p[2].toFixed(1)} µSv/h</span>`).join('')}</div>`;
   }
 
   const lvl = p => p >= 60 ? 'r' : p >= 30 ? 'y' : 'g';
-  const sevClass = s => s === 'CRÍTICA' ? 'CRITICA' : s;
   function kpi(label, val, sub, cls) { return `<div class="kpi ${cls || ''}"><div class="label">${label}</div><div class="val">${val}</div><div class="sub">${sub || ''}</div></div>`; }
 
   function render(d) {
     const m = d.metrics, r = d.radiation, z = d.zone, sup = d.supplies;
-    const stCls = d.status === 'CRÍTICO' ? 's-crit' : d.status === 'PRECAUCIÓN' ? 's-warn' : 's-ok';
+    const stCls = d.status === 'CRITICAL' ? 's-crit' : d.status === 'CAUTION' ? 's-warn' : 's-ok';
     
     $('kpis').innerHTML =
-      kpi('Riesgo global', `${d.risk_score}/100`, `${d.status}`, stCls) +
-      kpi('Distancia', fmtKm(S.dist), `<span style="color:${z.color}">${z.name}</span>`) +
-      kpi('Retardo ida/vuelta', fmtTime(m.delay_oneway_s), `Autonomía: ${m.autonomy_need_pct}%`, m.delay_oneway_s >= 60 ? 's-crit' : 's-ok') +
-      kpi('Radiación', `${r.total.toFixed(r.total < 100 ? 1 : 0)} µSv/h`, `Límite acumulado: ${r.limit_pct.toFixed(0)}%`, r.limit_pct >= 100 ? 's-crit' : 's-ok') +
-      kpi('Tierra se ve de', fmtDeg(m.earth_angular_deg), m.earth_out_of_view ? 'Solo un punto lejano' : 'Disco visible') +
-      kpi('Gravedad', `${m.g_effective} g`, m.g_effective < 0.1 ? 'Microgravedad' : 'Gravedad parcial');
+      kpi('Global risk', `${d.risk_score}/100`, `${d.status}`, stCls) +
+      kpi('Distance', fmtKm(S.dist), `<span style="color:${z.color}">${z.name}</span>`) +
+      kpi('One-way delay', fmtTime(m.delay_oneway_s), `Autonomy: ${m.autonomy_need_pct}%`, m.delay_oneway_s >= 60 ? 's-crit' : 's-ok') +
+      kpi('Radiation', `${r.total.toFixed(r.total < 100 ? 1 : 0)} µSv/h`, `Cumulative limit: ${r.limit_pct.toFixed(0)}%`, r.limit_pct >= 100 ? 's-crit' : 's-ok') +
+      kpi('Earth view angle', fmtDeg(m.earth_angular_deg), m.earth_out_of_view ? 'Just a distant dot' : 'Visible disk') +
+      kpi('Gravity', `${m.g_effective} g`, m.g_effective < 0.1 ? 'Microgravity' : 'Partial gravity');
 
     // Render de suministros
     let supHtml = `<div class="tiles" style="grid-template-columns: repeat(3, 1fr);">`;
-    supHtml += `<div class="tile"><span>Comida requerida</span><b>${sup.food_kg} kg</b></div>`;
-    supHtml += `<div class="tile"><span>Agua requerida</span><b>${sup.water_l} L</b></div>`;
-    supHtml += `<div class="tile"><span>Botiquines médicos</span><b>${sup.med_kits} u.</b></div>`;
+    supHtml += `<div class="tile"><span>Required food</span><b>${sup.food_kg} kg</b></div>`;
+    supHtml += `<div class="tile"><span>Required water</span><b>${sup.water_l} L</b></div>`;
+    supHtml += `<div class="tile"><span>Medical kits</span><b>${sup.med_kits} u.</b></div>`;
     supHtml += `</div>`;
     
     if (sup.resupply_possible) {
-        supHtml += `<div class="alert-box ok" style="margin-top:10px;">✅ <b>Logística viable:</b> La Tierra puede enviar naves de reabastecimiento (retardo asumible).</div>`;
+        supHtml += `<div class="alert-box ok" style="margin-top:10px;">✅ <b>Viable logistics:</b> Earth can send resupply spacecraft (acceptable delay).</div>`;
     } else {
-        supHtml += `<div class="alert-box crit" style="margin-top:10px;">⚠️ <b>ALERTA DE AUTONOMÍA:</b> Retardo de comunicación extremo. Es IMPOSIBLE esperar reabastecimiento. Todo debe estar a bordo o reciclarse (ECLSS).</div>`;
+        supHtml += `<div class="alert-box crit" style="margin-top:10px;">⚠️ <b>AUTONOMY ALERT:</b> Extreme communication delay. It is IMPOSSIBLE to wait for resupply. Everything must be onboard or recycled (ECLSS).</div>`;
     }
     $('supplies_panel').innerHTML = supHtml;
 
     drawProfile(d);
 
     $('anomalies_list').innerHTML = d.anomalies.length === 0
-      ? '<div class="alert-box ok">✅ Subsistemas nominales.</div>'
-      : d.anomalies.map(a => `<div class="alert-box ${a.severity === 'CRÍTICA' || a.severity === 'ALTA' ? 'crit' : a.severity === 'ADVERTENCIA' ? 'warn' : 'info'}"><strong>[${a.severity}] ${a.code}:</strong> ${a.detail}</div>`).join('');
+      ? '<div class="alert-box ok">✅ Nominal subsystems.</div>'
+      : d.anomalies.map(a => `<div class="alert-box ${a.severity === 'CRITICAL' || a.severity === 'HIGH' ? 'crit' : a.severity === 'WARNING' ? 'warn' : 'info'}"><strong>[${a.severity}] ${a.code}:</strong> ${a.detail}</div>`).join('');
 
     $('domains').innerHTML = d.domains.map(x => `<div><div class="dom-top"><span>${x.short}</span><b>${x.score}%</b></div><div class="bar ${lvl(x.score)}"><i style="width:${x.score}%"></i></div></div>`).join('');
 
@@ -869,10 +868,10 @@ HTML_DASHBOARD = r"""<!DOCTYPE html>
     d.domains.forEach(dom => {
       const list = d.conditions.filter(c => c.category === dom.id);
       html += `<div class="cat-head"><span>${dom.name}</span><span>${dom.score}%</span></div>`;
-      html += list.length === 0 ? '<div class="alert-box ok">✅ Sin riesgos clínicos.</div>'
-        : list.map(c => `<div class="cond ${sevClass(c.severity)}"><div class="cond-top"><strong>${c.name}</strong><span class="prob">${c.probability}% · ${c.severity}</span></div>
+      html += list.length === 0 ? '<div class="alert-box ok">✅ No clinical risks.</div>'
+        : list.map(c => `<div class="cond ${c.severity}"><div class="cond-top"><strong>${c.name}</strong><span class="prob">${c.probability}% · ${c.severity}</span></div>
           <div class="bar ${lvl(c.probability)}"><i style="width:${c.probability}%"></i></div>
-          <p><b>Causa:</b> ${c.why}</p><p><b>Protocolo de acción:</b> ${c.action}</p></div>`).join('');
+          <p><b>Cause:</b> ${c.why}</p><p><b>Action protocol:</b> ${c.action}</p></div>`).join('');
     });
     $('medical_list').innerHTML = html;
   }
