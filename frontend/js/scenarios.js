@@ -1,10 +1,10 @@
-// Solo presentación. Los valores de cada escenario (FC, PA, glucosa, alertas…) ahora los calcula
-// el backend: ver backend/scenarios.py (qué hace cada botón) y backend/runtime.py (motores).
+// Presentation only. The values of each scenario (HR, BP, glucose, alerts…) are now computed by
+// the backend: see backend/scenarios.py (what each button does) and backend/runtime.py (engines).
 export const organLabels = {
-  heart: 'Diagnóstico Regional: Tórax / Cardíaco',
-  abdomen: 'Diagnóstico Regional: Abdomen / Metabólico',
-  legs: 'Diagnóstico Regional: Extremidades / Retorno Venoso'
+  heart: 'Regional Diagnosis: Chest / Cardiac',
+  abdomen: 'Regional Diagnosis: Abdomen / Metabolic',
+  legs: 'Regional Diagnosis: Extremities / Venous Return'
 };
 
 export const defaultOrganText =
-  'Selecciona los marcadores sobre la anatomía 3D para consultar el impacto fisiológico.';
+  'Select the markers on the 3D anatomy to view the physiological impact.';

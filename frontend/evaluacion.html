@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Evaluación Mental · AEGIS-CREW</title>
-<!-- Nota: Asumo que style.css está en /static/style.css. Si tu CSS está en otra ruta, ajústalo aquí -->
+<title>Mental Assessment · MEDICJAB</title>
+<!-- Note: assumes style.css is at /static/style.css. If your CSS is elsewhere, adjust it here -->
 <link rel="stylesheet" href="/static/style.css">
 <style>
-  /* Estilos específicos para esta página (por si el CSS global no los tiene) */
+  /* Page-specific styles (in case the global CSS does not include them) */
   :root {
     --bg: #0b0f1a; --panel: #121826; --panel-2: #1a2233; --line: #263047;
     --text: #e6ecff; --muted: #8a96b3; --nominal: #34d399;
@@ -23,7 +23,7 @@
   .chip { display: inline-block; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; color: var(--muted); background: var(--panel-2); text-decoration: none; }
   .chip:hover { border-color: var(--accent); color: var(--text); }
 
-  /* Contenedor Wizard */
+  /* Wizard container */
   .wizard-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
   .step-indicator { display: flex; justify-content: space-between; margin-bottom: 30px; }
   .step-dot { flex: 1; text-align: center; padding: 10px; border-bottom: 3px solid var(--line); color: var(--muted); font-weight: bold; }
@@ -33,7 +33,7 @@
   .test-section.active { display: block; animation: fadeIn 0.3s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   
-  /* Preguntas */
+  /* Questions */
   .q-block { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
   .q-title { font-size: 15px; margin-bottom: 12px; color: var(--text); }
   .q-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -41,18 +41,18 @@
   .q-options label:hover { border-color: var(--line); }
   .q-options input[type="radio"] { accent-color: var(--accent); }
   
-  /* Botones */
+  /* Buttons */
   .actions { display: flex; gap: 10px; margin-top: 20px; }
   button { padding: 10px 20px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); cursor: pointer; font-size: 14px; font-weight: bold; }
   button:hover { border-color: var(--accent); }
   button.primary { background: var(--accent); color: #0b0f1a; border: none; }
   button.primary:hover { background: #3b82f6; }
   
-  /* Resultados */
+  /* Results */
   .results-box { text-align: center; padding: 30px; background: var(--panel); border-radius: 12px; border: 1px solid var(--line); }
   .score-circle { width: 110px; height: 110px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 15px; font-size: 32px; font-weight: bold; border: 4px solid var(--accent); }
   
-  /* Soluciones */
+  /* Solutions */
   .help-box { text-align: left; margin-top: 30px; border-top: 1px solid var(--line); padding-top: 20px; }
   .solution-card { background: var(--panel-2); border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; }
   .solution-card h4 { margin: 0 0 5px 0; color: var(--accent); font-size: 14px; }
@@ -65,13 +65,13 @@
   <div class="brand">
     <span class="logo">◉</span>
     <div>
-      <h1>AEGIS-CREW</h1>
-      <p>Evaluación Psicológica Autónoma</p>
+      <h1>MEDICJAB</h1>
+      <p>Autonomous Psychological Assessment</p>
     </div>
   </div>
   <div class="meta">
-    <!-- Asumo que tu dashboard principal está en la raíz "/" -->
-    <a href="/" class="chip">Volver al Dashboard</a>
+    <!-- Assumes the main dashboard is at the root "/" -->
+    <a href="/" class="chip">Back to Dashboard</a>
   </div>
 </header>
 
@@ -79,39 +79,39 @@
   <div class="step-indicator">
     <div class="step-dot active" id="dot-1">1. PHQ-9</div>
     <div class="step-dot" id="dot-2">2. GAD-7</div>
-    <div class="step-dot" id="dot-3">3. Resultados</div>
+    <div class="step-dot" id="dot-3">3. Results</div>
   </div>
 
-  <!-- PASO 1: PHQ-9 -->
+  <!-- STEP 1: PHQ-9 -->
   <div class="test-section active" id="section-1">
-    <h2>Cuestionario PHQ-9 (Estado de Ánimo)</h2>
-    <p style="color: var(--muted); margin-bottom: 20px;">Durante las últimas 2 semanas, ¿con qué frecuencia le han molestado los siguientes problemas?</p>
+    <h2>PHQ-9 Questionnaire (Mood)</h2>
+    <p style="color: var(--muted); margin-bottom: 20px;">Over the last 2 weeks, how often have you been bothered by the following problems?</p>
     <form id="form-phq9">
       <div id="phq9-list"></div>
       <div class="actions" style="justify-content: flex-end;">
-        <button type="submit" class="primary">Siguiente: GAD-7 →</button>
+        <button type="submit" class="primary">Next: GAD-7 →</button>
       </div>
     </form>
   </div>
 
-  <!-- PASO 2: GAD-7 -->
+  <!-- STEP 2: GAD-7 -->
   <div class="test-section" id="section-2">
-    <h2>Cuestionario GAD-7 (Ansiedad)</h2>
-    <p style="color: var(--muted); margin-bottom: 20px;">Durante las últimas 2 semanas, ¿con qué frecuencia le han molestado los siguientes problemas?</p>
+    <h2>GAD-7 Questionnaire (Anxiety)</h2>
+    <p style="color: var(--muted); margin-bottom: 20px;">Over the last 2 weeks, how often have you been bothered by the following problems?</p>
     <form id="form-gad7">
       <div id="gad7-list"></div>
       <div class="actions" style="justify-content: space-between;">
-        <button type="button" onclick="prevStep(1)">← Volver</button>
-        <button type="submit" class="primary">Finalizar Evaluación ✓</button>
+        <button type="button" onclick="prevStep(1)">← Back</button>
+        <button type="submit" class="primary">Finish Assessment ✓</button>
       </div>
     </form>
   </div>
 
-  <!-- PASO 3: RESULTADOS Y AYUDA -->
+  <!-- STEP 3: RESULTS AND HELP -->
   <div class="test-section" id="section-3">
     <div class="results-box">
-      <h2>Evaluación Completada</h2>
-      <p style="color: var(--muted); margin-bottom: 25px;">Los resultados han sido procesados y enviados al sistema.</p>
+      <h2>Assessment Completed</h2>
+      <p style="color: var(--muted); margin-bottom: 25px;">The results have been processed and sent to the system.</p>
       
       <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 10px;">
         <div>
@@ -125,24 +125,24 @@
       </div>
 
       <div id="alert-box" style="text-align: left; margin-bottom: 20px; display: none; background: #2a1414; border-left: 4px solid var(--critical); padding: 10px 15px; border-radius: 8px;">
-        <strong style="color: var(--critical);">⚠️ Alerta Clínica:</strong> Se ha detectado un nivel de riesgo. El protocolo SHARE se ha activado.
+        <strong style="color: var(--critical);">⚠️ Clinical Alert:</strong> A risk level has been detected. The SHARE protocol has been activated.
       </div>
 
-      <!-- SECCIÓN DE SOLUCIONES -->
+      <!-- SOLUTIONS SECTION -->
       <div id="solutions-container" class="help-box" style="display: none;">
-        <h3 style="color: var(--nominal); margin-bottom: 15px;">Plan de Contramedidas Sugerido</h3>
-        <p style="color: var(--muted); margin-bottom: 15px; font-size: 13px;">Basado en tus respuestas, el sistema autónomo recomienda:</p>
+        <h3 style="color: var(--nominal); margin-bottom: 15px;">Suggested Countermeasure Plan</h3>
+        <p style="color: var(--muted); margin-bottom: 15px; font-size: 13px;">Based on your answers, the autonomous system recommends:</p>
         
         <div id="solutions-list"></div>
 
         <div style="margin-top: 25px; text-align: center;">
-          <a href="/" class="primary" style="display: inline-block; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; background: var(--accent); color: #0b0f1a;">Ir al Dashboard a iniciar SHARE</a>
+          <a href="/" class="primary" style="display: inline-block; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; background: var(--accent); color: #0b0f1a;">Go to the Dashboard to start SHARE</a>
         </div>
       </div>
 
       <div id="no-solutions" style="margin-top: 20px; display: none;">
-        <p style="color: var(--muted);">Tus niveles están dentro del rango nominal. ¡Sigue así!</p>
-        <a href="/" class="primary" style="display: inline-block; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; background: var(--accent); color: #0b0f1a; margin-top: 10px;">Volver al Dashboard</a>
+        <p style="color: var(--muted);">Your levels are within the nominal range. Keep it up!</p>
+        <a href="/" class="primary" style="display: inline-block; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; background: var(--accent); color: #0b0f1a; margin-top: 10px;">Back to Dashboard</a>
       </div>
     </div>
   </div>
@@ -150,23 +150,23 @@
 
 <script>
   const OPTIONS = [
-    { v: 0, t: "Nunca" }, { v: 1, t: "Varios días" },
-    { v: 2, t: "Más de la mitad" }, { v: 3, t: "Casi todos los días" }
+    { v: 0, t: "Not at all" }, { v: 1, t: "Several days" },
+    { v: 2, t: "More than half the days" }, { v: 3, t: "Nearly every day" }
   ];
 
   const PHQ9 = [
-    "Poco interés o placer en hacer las cosas", "Sentirse desanimado/a, deprimido/a o sin esperanzas",
-    "Problemas para dormir o mantenerse dormido/a", "Sentirse cansado/a o tener poca energía",
-    "Falta de apetito o comer en exceso", "Sentirse mal consigo mismo/a, o que es un fracaso",
-    "Dificultad para concentrarse en las cosas", "Moverse o hablar tan lento que otros lo notaron",
-    "Pensamientos de que estaría mejor muerto/a o de lastimarse"
+    "Little interest or pleasure in doing things", "Feeling down, depressed, or hopeless",
+    "Trouble falling or staying asleep, or sleeping too much", "Feeling tired or having little energy",
+    "Poor appetite or overeating", "Feeling bad about yourself, or that you are a failure",
+    "Trouble concentrating on things", "Moving or speaking so slowly that others could have noticed",
+    "Thoughts that you would be better off dead, or of hurting yourself"
   ];
 
   const GAD7 = [
-    "Sentirse nervioso/a, ansioso/a o con los nervios de punta", "No poder dejar de preocuparse",
-    "Preocuparse demasiado por diferentes cosas", "Dificultad para relajarse",
-    "Estar tan inquieto/a que es difícil quedarse quieto/a", "Sentirse fácilmente molesto/a o irritable",
-    "Sentir miedo como si algo terrible pudiera pasar"
+    "Feeling nervous, anxious, or on edge", "Not being able to stop or control worrying",
+    "Worrying too much about different things", "Trouble relaxing",
+    "Being so restless that it is hard to sit still", "Becoming easily annoyed or irritable",
+    "Feeling afraid, as if something awful might happen"
   ];
 
   function renderQuestions(containerId, questions, prefix) {
@@ -227,7 +227,7 @@
       document.getElementById('alert-box').style.display = 'block';
     }
 
-    // GENERAR SOLUCIONES
+    // GENERATE SOLUTIONS
     const solContainer = document.getElementById('solutions-container');
     const solList = document.getElementById('solutions-list');
     solList.innerHTML = "";
@@ -238,19 +238,19 @@
 
       let sols = [];
       if (item9 > 0) {
-        sols.push({ t: "Protocolo de Seguridad (SHARE)", d: "Acompañamiento inmediato de un compañero y contacto clínico urgente." });
+        sols.push({ t: "Safety Protocol (SHARE)", d: "Immediate companionship from a crewmate and urgent clinical contact." });
       }
       if (gadTotal >= 10) {
-        sols.push({ t: "Entrenamiento SMART-OP", d: "Módulo autónomo para el manejo del estrés y la ansiedad." });
+        sols.push({ t: "SMART-OP Training", d: "Autonomous module for stress and anxiety management." });
       }
       if (phqTotal >= 10) {
-        sols.push({ t: "Módulos de TCC Autónomos", d: "Terapia Cognitivo-Conductual interactiva para manejar síntomas depresivos." });
+        sols.push({ t: "Autonomous CBT Modules", d: "Interactive Cognitive Behavioral Therapy to manage depressive symptoms." });
       }
       if (phqTotal >= 5 && gadTotal >= 5) {
-        sols.push({ t: "Ejercicio Aeróbico Guiado", d: "30 min de intervalos para estabilizar el estado de ánimo." });
+        sols.push({ t: "Guided Aerobic Exercise", d: "30 min of intervals to stabilize mood." });
       }
-      sols.push({ t: "Conexión Social Asincrónica", d: "Mensaje o video familiar para mitigar el aislamiento." });
-      sols.push({ t: "Protección del Sueño", d: "Revisar ruido ambiental y proteger la ventana de sueño." });
+      sols.push({ t: "Asynchronous Social Connection", d: "Family message or video to mitigate isolation." });
+      sols.push({ t: "Sleep Protection", d: "Check ambient noise and protect the sleep window." });
 
       sols.forEach(s => {
         const div = document.createElement('div');
@@ -266,7 +266,7 @@
 
     setStep(3);
 
-    // ENVIAR DATOS AL BACKEND (Ajusta la URL si es necesario)
+    // SEND DATA TO THE BACKEND (adjust the URL if needed)
     const payload = {
       crew_id: "CDR-01",
       timestamp: new Date().toISOString(),
@@ -280,14 +280,14 @@
     };
 
     try {
-      // Si tu backend FastAPI tiene otra ruta para recibir datos, cámbiala aquí:
+      // If your FastAPI backend uses a different route to receive data, change it here:
       await fetch('/api/ingest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
     } catch (err) {
-      console.error("Error enviando datos:", err);
+      console.error("Error sending data:", err);
     }
   });
 </script>

@@ -547,7 +547,7 @@
     }
     @media (max-width: 640px) { .extra-strip { grid-column: span 1; grid-template-columns: 1fr; } }
 
-    /* ================= INTEGRACIÓN CON EL BACKEND (añadido) ================= */
+    /* ================= BACKEND INTEGRATION (added) ================= */
     #ecg-canvas { height: 52px; }
 
     .system-badge.offline {
@@ -559,7 +559,7 @@
     #btn-reset { min-width: 0; }
     #btn-reset:hover { border-color: var(--border-highlight); }
 
-    /* La temperatura ahora cambia de color según el estado (antes tenía un color fijo inline) */
+    /* Temperature now changes color according to state (it used to have a fixed inline color) */
     #card-temp:not(.crit):not(.warn) .v-main { color: #22c55e; }
 
     .sim-tag {

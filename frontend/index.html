@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Prototipo de monitoreo fisiológico para misiones espaciales." />
-  <title>Astro Health Monitor - Escaneo Anatómico 3D</title>
+  <meta name="description" content="MEDICJAB: autonomous physiological monitoring prototype for space missions." />
+  <title>MEDICJAB - 3D Anatomical Scan</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <!-- Añadimos un pequeño estilo para el botón del test mental -->
+  <!-- Small style for the mental assessment button -->
   <style>
     .btn-test-mental {
       display: flex;
@@ -45,35 +45,35 @@
         </svg>
       </div>
       <div class="logo-text">
-        <h1>Astro Health Monitor</h1>
-        <p class="mono">Soporte Médico Autónomo para Misiones Espaciales</p>
+        <h1>MEDICJAB</h1>
+        <p class="mono">Autonomous Medical Support for Space Missions</p>
       </div>
     </div>
 
     <div class="header-controls">
       <select id="astro-select" class="select-box" >
         <option value="Cmdr. Rivera">Cmdr. Rivera</option>
-        <option value="Dra. Vance">Dra. Vance</option>
-        <option value="Ing. Sato">Ing. Sato</option>
+        <option value="Dra. Vance">Dr. Vance</option>
+        <option value="Ing. Sato">Eng. Sato</option>
       </select>
       <select id="orbit-select" class="select-box" >
-        <option value="Órbita baja">Órbita baja</option>
-        <option value="Tránsito Lunar">Tránsito Lunar</option>
-        <option value="Superficie Marte">Superficie Marte</option>
+        <option value="Órbita baja">Low Earth Orbit</option>
+        <option value="Tránsito Lunar">Lunar Transit</option>
+        <option value="Superficie Marte">Mars Surface</option>
       </select>
       <div id="conn-badge" class="system-badge offline mono">
         <span class="system-dot"></span>
-        <span id="conn-text">Conectando con el backend…</span>
+        <span id="conn-text">Connecting to backend…</span>
       </div>
-      <button id="btn-reset" class="select-box" type="button">Restablecer todo</button>
+      <button id="btn-reset" class="select-box" type="button">Reset all</button>
     </div>
   </header>
 
   <!-- STATUS BANNER + COMMS -->
   <section class="top-status-grid">
     <div id="banner-box" class="status-banner">
-      <h2 id="banner-state">ESTADO: NOMINAL</h2>
-      <span id="banner-meta" class="mono">Cmdr. Rivera · Comandante · Órbita baja · Día 45 · T+266:09</span>
+      <h2 id="banner-state">STATUS: NOMINAL</h2>
+      <span id="banner-meta" class="mono">Cmdr. Rivera · Commander · Low Earth Orbit · Day 45 · T+266:09</span>
     </div>
 
     <div class="comms-box">
@@ -84,8 +84,8 @@
         </svg>
       </div>
       <div>
-        <h3 id="comms-title">Enlace con Tierra: nominal (1.2s)</h3>
-        <p id="comms-sub" class="mono">Escenario de cabina: NOMINAL</p>
+        <h3 id="comms-title">Earth link: nominal (1.2s)</h3>
+        <p id="comms-sub" class="mono">Cabin scenario: NOMINAL</p>
       </div>
     </div>
   </section>
@@ -93,72 +93,72 @@
   <!-- MAIN 3-COLUMN WORKSPACE -->
   <div class="main-layout">
 
-    <!-- COLUMN 1: PANEL DE CONTROL -->
+    <!-- COLUMN 1: CONTROL PANEL -->
     <aside class="panel">
       <div class="panel-title-row">
-        <h3>Panel de control</h3>
+        <h3>Control panel</h3>
       </div>
 
-      <div class="cat-label mono">Procesamiento de Señal</div>
+      <div class="cat-label mono">Signal Processing</div>
       <div class="switch-item">
-        <span>Inyectar ruido (60 Hz + movimiento)</span>
-        <div id="sw-noise" class="toggle-pill" data-toggle="noise" role="switch" tabindex="0" aria-label="Inyectar ruido"></div>
+        <span>Inject noise (60 Hz + motion)</span>
+        <div id="sw-noise" class="toggle-pill" data-toggle="noise" role="switch" tabindex="0" aria-label="Inject noise"></div>
       </div>
       <div class="switch-item">
-        <span>Mostrar señal cruda</span>
-        <div id="sw-raw" class="toggle-pill active" data-toggle="raw" role="switch" tabindex="0" aria-label="Mostrar señal cruda"></div>
+        <span>Show raw signal</span>
+        <div id="sw-raw" class="toggle-pill active" data-toggle="raw" role="switch" tabindex="0" aria-label="Show raw signal"></div>
       </div>
 
-      <div class="cat-label mono">IA a Bordo</div>
+      <div class="cat-label mono">Onboard AI</div>
       <div class="switch-item">
-        <span>Usar IA para disparar alertas</span>
-        <div id="sw-ai" class="toggle-pill" data-toggle="ai" role="switch" tabindex="0" aria-label="Usar IA para alertas"></div>
+        <span>Use AI to trigger alerts</span>
+        <div id="sw-ai" class="toggle-pill" data-toggle="ai" role="switch" tabindex="0" aria-label="Use AI for alerts"></div>
       </div>
-      <p id="ai-helper" class="switch-helper">Motor de triaje autónomo calibrado con rangos NASA HRP.</p>
+      <p id="ai-helper" class="switch-helper">Autonomous triage engine calibrated with NASA HRP ranges.</p>
 
-      <div class="cat-label mono">Estado Base</div>
+      <div class="cat-label mono">Baseline State</div>
       <button class="ctrl-btn selected-ok" data-hazard="normal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        <span>Condición Nominal (0g Estable)</span>
+        <span>Nominal Condition (Stable 0g)</span>
       </button>
 
-      <div class="cat-label mono">5 Peligros de Vuelos Espaciales</div>
+      <div class="cat-label mono">5 Spaceflight Hazards</div>
 
       <button class="ctrl-btn" data-hazard="radiacion">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-        <span>1. Radiación espacial (SPE)</span>
+        <span>1. Space radiation (SPE)</span>
       </button>
 
       <button class="ctrl-btn" data-hazard="aislamiento">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-        <span>2. Aislamiento y confinamiento</span>
+        <span>2. Isolation and confinement</span>
       </button>
 
       <button class="ctrl-btn" data-hazard="distancia">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
-        <span>3. Distancia desde la Tierra</span>
+        <span>3. Distance from Earth</span>
       </button>
 
       <button class="ctrl-btn" data-hazard="gravedad">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="m8 12 4 4 4-4"/></svg>
-        <span>4. Campos gravitatorios (0.38g)</span>
+        <span>4. Gravity fields (0.38g)</span>
       </button>
 
       <button class="ctrl-btn" data-hazard="entorno">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>
-        <span>5. Entornos hostiles (Fuga CO₂)</span>
+        <span>5. Hostile environments (CO₂ leak)</span>
       </button>
     </aside>
 
-    <!-- COLUMN 2: ESCANEO CORPORAL -->
+    <!-- COLUMN 2: BODY SCAN -->
     <section class="panel body-column">
       <div class="panel-title-row">
-        <h3>Escaneo corporal</h3>
-        <span class="panel-subtitle mono">Toca un punto</span>
+        <h3>Body scan</h3>
+        <span class="panel-subtitle mono">Tap a point</span>
       </div>
 
       <div class="grid-canvas">
-        <svg class="body-svg" viewBox="0 0 240 420" role="img" aria-label="Modelo anatómico 3D interactivo del astronauta">
+        <svg class="body-svg" viewBox="0 0 240 420" role="img" aria-label="Interactive 3D anatomical model of the astronaut">
           <defs>
             <radialGradient id="scanGlow" cx="50%" cy="55%" r="55%">
               <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.20" />
@@ -167,62 +167,62 @@
             </radialGradient>
           </defs>
           <ellipse cx="120" cy="215" rx="112" ry="198" fill="url(#scanGlow)" />
-          <!-- Anatomía 3D realista incrustada en el propio HTML -->
+          <!-- Realistic 3D anatomy embedded in the HTML -->
           <image x="-25" y="0" width="290" height="420"
               href="assets/anatomia_azul.png"
               preserveAspectRatio="none"
               style="pointer-events:none" />
-          <!-- Marcadores interactivos: se iluminan según el escenario seleccionado -->
-          <g id="pt-heart" class="node-point" data-organ="heart" role="button" aria-label="Seleccionar corazón" tabindex="0">
+          <!-- Interactive markers: they light up according to the selected scenario -->
+          <g id="pt-heart" class="node-point" data-organ="heart" role="button" aria-label="Select heart" tabindex="0">
             <circle class="node-outer" cx="122" cy="101" r="9" />
             <circle class="node-inner" cx="122" cy="101" r="4" />
           </g>
-          <g id="pt-abdomen" class="node-point" data-organ="abdomen" role="button" aria-label="Seleccionar abdomen" tabindex="0">
+          <g id="pt-abdomen" class="node-point" data-organ="abdomen" role="button" aria-label="Select abdomen" tabindex="0">
             <circle class="node-outer" cx="120" cy="176" r="9" />
             <circle class="node-inner" cx="120" cy="176" r="4" />
           </g>
-          <g id="pt-legL" class="node-point" data-organ="legs" role="button" aria-label="Seleccionar pierna izquierda" tabindex="0">
+          <g id="pt-legL" class="node-point" data-organ="legs" role="button" aria-label="Select left leg" tabindex="0">
             <circle class="node-outer" cx="99" cy="246" r="9" />
             <circle class="node-inner" cx="99" cy="246" r="4" />
           </g>
-          <g id="pt-legR" class="node-point" data-organ="legs" role="button" aria-label="Seleccionar pierna derecha" tabindex="0">
+          <g id="pt-legR" class="node-point" data-organ="legs" role="button" aria-label="Select right leg" tabindex="0">
             <circle class="node-outer" cx="141" cy="246" r="9" />
             <circle class="node-inner" cx="141" cy="246" r="4" />
           </g>
         </svg>
 
         <div class="scan-tooltip">
-          <strong id="organ-head">Diagnóstico Regional: Tórax / Cardíaco</strong>
-          <span id="organ-body">Selecciona los marcadores sobre la anatomía 3D para consultar el impacto fisiológico.</span>
+          <strong id="organ-head">Regional Diagnosis: Chest / Cardiac</strong>
+          <span id="organ-body">Select the markers on the 3D anatomy to view the physiological impact.</span>
         </div>
       </div>
     </section>
 
-    <!-- COLUMN 3: ASTRONAUTA - SIGNOS VITALES -->
+    <!-- COLUMN 3: ASTRONAUT - VITAL SIGNS -->
     <section class="panel">
       <div class="right-header">
-        <h3>Astronauta · signos vitales</h3>
-        <span class="live-tag mono">En vivo</span>
+        <h3>Astronaut · vital signs</h3>
+        <span class="live-tag mono">Live</span>
       </div>
 
       <div class="vitals-grid">
-        <!-- 1. FRECUENCIA CARDÍACA + ECG -->
+        <!-- 1. HEART RATE + ECG -->
         <div id="card-fc" class="v-card">
           <div class="v-top">
-            <span>Frecuencia Cardíaca</span>
+            <span>Heart Rate</span>
             <span style="color: #ef4444;">♡</span>
           </div>
           <div>
             <div class="v-main"><span id="val-fc">72</span> <small>bpm</small></div>
-            <div id="desc-fc" class="v-desc">Ritmo sinusal estable</div>
+            <div id="desc-fc" class="v-desc">Stable sinus rhythm</div>
           </div>
           <canvas id="ecg-canvas" width="520" height="104"></canvas>
         </div>
 
-        <!-- 2. HORAS DE SUEÑO (ANILLO TIPO SPO2) -->
+        <!-- 2. SLEEP HOURS (SPO2-STYLE RING) -->
         <div id="card-sueno" class="v-card">
           <div class="v-top">
-            <span>Horas de Sueño Diarias <em class="sim-tag" title="Valor simulado: el Proyecto A no lo mide">SIM</em></span>
+            <span>Daily Sleep Hours <em class="sim-tag" title="Simulated value: not measured by the onboard engines">SIM</em></span>
             <span>🌙</span>
           </div>
           <div class="gauge-container">
@@ -232,72 +232,72 @@
             </svg>
             <div class="gauge-label">
               <strong id="val-sueno">7.2</strong>
-              <span>hrs · meta 8h</span>
+              <span>hrs · goal 8h</span>
             </div>
           </div>
         </div>
 
-        <!-- 3. PRESIÓN ARTERIAL -->
+        <!-- 3. BLOOD PRESSURE -->
         <div id="card-pa" class="v-card">
           <div class="v-top">
-            <span>Presión Arterial <em class="sim-tag" title="Valor simulado: el Proyecto A no lo mide">SIM</em></span>
+            <span>Blood Pressure <em class="sim-tag" title="Simulated value: not measured by the onboard engines">SIM</em></span>
             <span>≈</span>
           </div>
           <div>
             <div class="v-main"><span id="val-pa">118/76</span> <small>mmHg</small></div>
-            <div id="desc-pa" class="v-desc">Perfusión sistémica normal</div>
+            <div id="desc-pa" class="v-desc">Normal systemic perfusion</div>
           </div>
         </div>
 
-        <!-- 4. GLUCOSA EN SANGRE -->
+        <!-- 4. BLOOD GLUCOSE -->
         <div id="card-glu" class="v-card">
           <div class="v-top">
-            <span>Glucosa en Sangre <em class="sim-tag" title="Valor simulado: el Proyecto A no lo mide">SIM</em></span>
+            <span>Blood Glucose <em class="sim-tag" title="Simulated value: not measured by the onboard engines">SIM</em></span>
             <span>≈</span>
           </div>
           <div>
             <div class="v-main"><span id="val-glu">92</span> <small>mg/dL</small></div>
-            <div id="desc-glu" class="v-desc">Control glucémico óptimo</div>
+            <div id="desc-glu" class="v-desc">Optimal glycemic control</div>
           </div>
         </div>
 
-        <!-- 5. TEMPERATURA CORPORAL -->
+        <!-- 5. BODY TEMPERATURE -->
         <div id="card-temp" class="v-card">
           <div class="v-top">
-            <span>Temp. Corporal <em class="sim-tag" title="Valor simulado: el Proyecto A no lo mide">SIM</em></span>
+            <span>Body Temp. <em class="sim-tag" title="Simulated value: not measured by the onboard engines">SIM</em></span>
             <span style="color: #10b981;">🌡</span>
           </div>
           <div>
             <div class="v-main"><span id="val-temp">36.6</span> <small>°C</small></div>
-            <div id="desc-temp" class="v-desc">Termorregulación estable</div>
+            <div id="desc-temp" class="v-desc">Stable thermoregulation</div>
           </div>
         </div>
 
-        <!-- 6. IA A BORDO (DIAGNÓSTICO) -->
+        <!-- 6. ONBOARD AI (DIAGNOSTICS) -->
         <div id="card-ia" class="v-card">
           <div class="v-top">
-            <span>IA a Bordo</span>
+            <span>Onboard AI</span>
             <span style="color: #f59e0b;">⚙</span>
           </div>
           <div>
             <div id="val-ia" class="ia-status-text">NOMINAL</div>
-            <div id="desc-ia" class="v-desc">98% confianza · Sin anomalías</div>
+            <div id="desc-ia" class="v-desc">98% confidence · No anomalies</div>
           </div>
         </div>
 
-        <!-- FILA INFERIOR: ESTADO DE ÁNIMO + DOSIS RADIACIÓN -->
+        <!-- BOTTOM ROW: MOOD + RADIATION DOSE -->
         <div class="extra-strip">
           <div id="card-animo" class="v-card" style="grid-column: span 2;">
             <div class="v-top">
-              <span>Estado de Ánimo / Conductual <em class="sim-tag" title="Valor simulado: el Proyecto A no lo mide">SIM</em></span>
+              <span>Mood / Behavioral <em class="sim-tag" title="Simulated value: not measured by the onboard engines">SIM</em></span>
               <span>🧠</span>
             </div>
             <div>
-              <div class="v-main" style="font-size: 1.35rem;"><span id="val-animo">Estable · Óptimo (9/10)</span></div>
-              <div id="desc-animo" class="v-desc">Sin signos de fatiga cognitiva ni estrés de aislamiento</div>
+              <div class="v-main" style="font-size: 1.35rem;"><span id="val-animo">Stable · Optimal (9/10)</span></div>
+              <div id="desc-animo" class="v-desc">No signs of cognitive fatigue or isolation stress</div>
             </div>
             <!-- ========================================================= -->
-            <!-- AQUÍ ESTÁ EL BOTÓN AGREGADO -->
+            <!-- MENTAL ASSESSMENT BUTTON -->
             <!-- ========================================================= -->
             <a href="/evaluacion.html" class="btn-test-mental">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -305,7 +305,7 @@
                 <path d="M12 12 2.1 9.1"/>
                 <path d="m12 12 3.9 7.8"/>
               </svg>
-              Iniciar Evaluación Mental (PHQ-9 / GAD-7)
+              Start Mental Assessment (PHQ-9 / GAD-7)
             </a>
             <!-- ========================================================= -->
 
@@ -313,12 +313,12 @@
 
           <div id="card-rad" class="v-card">
             <div class="v-top">
-              <span>Dosis Acumulada</span>
+              <span>Accumulated Dose</span>
               <span>☢</span>
             </div>
             <div>
               <div class="v-main" style="font-size: 1.45rem;"><span id="val-rad">18.41</span> <small>mSv</small></div>
-              <div id="desc-rad" class="v-desc">Sesión: 6.32 µSv</div>
+              <div id="desc-rad" class="v-desc">Session: 6.32 µSv</div>
             </div>
           </div>
         </div>
@@ -328,22 +328,22 @@
 
   </div>
 
-  <!-- OPERACIONES: datos de los motores del Proyecto A -->
+  <!-- OPERATIONS: data from the backend engines -->
   <section class="ops-grid">
     <div class="panel ops-wide">
-      <div class="panel-title-row"><h3>Alertas y protocolos</h3><span id="alerts-count" class="panel-subtitle mono">0 activas</span></div>
+      <div class="panel-title-row"><h3>Alerts and protocols</h3><span id="alerts-count" class="panel-subtitle mono">0 active</span></div>
       <ul id="alerts-list" class="ops-list"></ul>
     </div>
     <div class="panel">
-      <div class="panel-title-row"><h3>Gemelo bio-digital</h3><span class="panel-subtitle mono">S.H.A.R.E.</span></div>
+      <div class="panel-title-row"><h3>Bio-digital twin</h3><span class="panel-subtitle mono">S.H.A.R.E.</span></div>
       <div id="twin-body"></div>
     </div>
     <div class="panel">
-      <div class="panel-title-row"><h3>Análisis orbital</h3><span class="panel-subtitle mono">Bio-Orbital</span></div>
+      <div class="panel-title-row"><h3>Orbital analysis</h3><span class="panel-subtitle mono">Bio-Orbital</span></div>
       <div id="orbital-body"></div>
     </div>
     <div class="panel">
-      <div class="panel-title-row"><h3>Gateway local</h3><span class="panel-subtitle mono">SQLite + FIFO</span></div>
+      <div class="panel-title-row"><h3>Local gateway</h3><span class="panel-subtitle mono">SQLite + FIFO</span></div>
       <div id="gateway-body"></div>
     </div>
   </section>

@@ -1,7 +1,7 @@
 import { state } from './state.js';
 
 // ECG real: el backend filtra con el DSP del Proyecto A (notch 60 Hz + Butterworth + Pan-Tompkins)
-// y envía cada segundo ~120 muestras (raw + filtrada, ya normalizadas). Aquí solo se reproducen
+// and sends ~120 samples every second (raw + filtered, already normalized). Here they are only replayed
 // en tiempo real con un desplazamiento continuo.
 const RING = 480;                       // 4 s a 120 Hz
 const ringRaw = new Array(RING).fill(0);
@@ -13,7 +13,7 @@ export function pushEcg(ecg) {
   if (!ecg || !ecg.filt) return;
   fs = ecg.fs || fs;
   for (let i = 0; i < ecg.filt.length; i++) queue.push([ecg.raw[i], ecg.filt[i]]);
-  if (queue.length > fs * 3) queue.splice(0, queue.length - fs * 2);   // evita acumular retraso (pestaña en segundo plano)
+  if (queue.length > fs * 3) queue.splice(0, queue.length - fs * 2);   // avoids accumulating lag (background tab)
 }
 
 export function startECG() {
@@ -64,6 +64,6 @@ function draw(context, canvas) {
   context.clearRect(0, 0, width, height);
   const cls = state.last?.vitals?.fc?.cls;
   const color = cls === 'crit' ? '#ef4444' : (cls === 'warn' ? '#f59e0b' : '#22c55e');
-  if (state.toggles.raw) trace(context, ringRaw, width, height, '#64748b', 1.2, 0.75);   // señal cruda (gris)
-  trace(context, ringFilt, width, height, color, 2, 1);                                    // señal filtrada
+  if (state.toggles.raw) trace(context, ringRaw, width, height, '#64748b', 1.2, 0.75);   // raw signal (gray)
+  trace(context, ringFilt, width, height, color, 2, 1);                                    // filtered signal
 }

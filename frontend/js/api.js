@@ -1,5 +1,5 @@
-// Comunicación con el backend (FastAPI). Mismo origen por defecto.
-// Si abres el HTML con Live Server (otro puerto), usa:  index.html?api=http://127.0.0.1:8000
+// Communication with the backend (FastAPI). Same origin by default.
+// If you open the HTML with Live Server (another port), use:  index.html?api=http://127.0.0.1:8000
 const BASE = (new URLSearchParams(location.search).get('api') || '').replace(/\/$/, '');
 
 export async function post(path, body = {}) {

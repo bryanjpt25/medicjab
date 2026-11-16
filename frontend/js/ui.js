@@ -13,9 +13,9 @@ function el(tag, className, text) {
 
 function fail(error) { console.error(error); }
 
-// ---------------------------------------------------------------- acciones hacia el backend
+// ---------------------------------------------------------------- actions sent to the backend
 export function toggleSw(name) {
-  state.toggles[name] = !state.toggles[name];     // optimista; el servidor confirma en el siguiente estado
+  state.toggles[name] = !state.toggles[name];     // optimistic; the server confirms in the next state
   paintToggles();
   post('/toggle', { name, value: state.toggles[name] }).catch(fail);
 }
@@ -29,7 +29,7 @@ export function selectOrgan(part) {
   paintOrgan();
 }
 
-// ---------------------------------------------------------------- pintado
+// ---------------------------------------------------------------- rendering
 function setCard(id, val, stateClass, desc) {
   const card = byId('card-' + id);
   if (card) card.className = 'v-card ' + (stateClass || '');
@@ -63,10 +63,10 @@ function paintHazards(s) {
 function paintAiHelper(s) {
   const helper = byId('ai-helper');
   const status = s.modules.ai;
-  const base = 'Motor de triaje autónomo calibrado con rangos NASA HRP.';
+  const base = 'Autonomous triage engine calibrated with NASA HRP ranges.';
   if (!state.toggles.ai) helper.textContent = base;
-  else if (status === 'loading') helper.textContent = 'Cargando modelo TFLite (la primera vez tarda)…';
-  else if (status === 'unavailable') helper.textContent = 'CNN no disponible (instala tensorflow-cpu). Triaje por reglas activo.';
+  else if (status === 'loading') helper.textContent = 'Loading TFLite model (the first time takes a while)…';
+  else if (status === 'unavailable') helper.textContent = 'CNN unavailable (install tensorflow-cpu). Rule-based triage active.';
   else helper.textContent = base;
 }
 
@@ -74,34 +74,34 @@ export function setConnection(connected) {
   state.connected = connected;
   byId('conn-badge').classList.toggle('offline', !connected);
   byId('conn-text').textContent = connected
-    ? 'Backend local: CONECTADO (100% offline)'
-    : 'Sin conexión con el backend… reintentando';
+    ? 'Local backend: CONNECTED'
+    : 'No connection to backend… retrying';
 }
 
 export function render(s) {
   state.last = s;
   const v = s.vitals;
 
-  // Los selectores se sincronizan una sola vez (al recargar la página); después manda el usuario
+  // The selectors are synced only once (on page reload); after that the user is in control
   if (!state.selectsSynced) {
     byId('astro-select').value = s.selection.astro;
     byId('orbit-select').value = s.selection.orbit;
     state.selectsSynced = true;
   }
 
-  // El servidor es la fuente de verdad de los interruptores
+  // The server is the source of truth for the toggles
   state.toggles = { ...s.toggles };
   paintToggles();
   paintAiHelper(s);
 
-  // Banner y enlace con la Tierra
+  // Banner and Earth link
   byId('banner-box').className = 'status-banner ' + s.banner.cls;
   byId('banner-state').textContent = s.banner.text;
   byId('banner-meta').textContent = s.banner.meta;
   byId('comms-title').textContent = s.comms.title;
   byId('comms-sub').textContent = s.comms.sub;
 
-  // Signos vitales
+  // Vital signs
   setCard('fc', v.fc.val, v.fc.cls, `${v.fc.desc} · SpO₂ ${v.spo2.val}%`);
   setCard('pa', v.pa.val, v.pa.cls, v.pa.desc);
   setCard('glu', v.glu.val, v.glu.cls, v.glu.desc);
@@ -119,7 +119,7 @@ export function render(s) {
   byId('desc-ia').textContent = v.ia.desc;
   paintToggles();
 
-  // Escáner corporal
+  // Body scanner
   byId('pt-heart').className.baseVal = 'node-point ' + s.points.heart;
   byId('pt-abdomen').className.baseVal = 'node-point ' + s.points.abdomen;
   byId('pt-legL').className.baseVal = 'node-point ' + s.points.legs;
@@ -134,13 +134,13 @@ export function render(s) {
   renderModules(s);
 }
 
-// ---------------------------------------------------------------- panel de operaciones
+// ---------------------------------------------------------------- operations panel
 function renderAlerts(s) {
   const list = byId('alerts-list');
   list.replaceChildren();
-  byId('alerts-count').textContent = `${s.alerts.length} activas`;
+  byId('alerts-count').textContent = `${s.alerts.length} active`;
   if (!s.alerts.length) {
-    list.appendChild(el('li', 'al-ok', 'Todos los signos vitales y la cabina dentro de rango normal.'));
+    list.appendChild(el('li', 'al-ok', 'All vital signs and cabin readings are within normal range.'));
     return;
   }
   const shown = new Set();
@@ -149,7 +149,7 @@ function renderAlerts(s) {
     if (alert.protocol && !shown.has(alert.protocol)) {
       shown.add(alert.protocol);
       const details = el('details', 'al-protocol');
-      details.appendChild(el('summary', '', `Protocolo automático (${alert.protocol})`));
+      details.appendChild(el('summary', '', `Automatic protocol (${alert.protocol})`));
       const steps = el('ol');
       alert.steps.forEach(step => steps.appendChild(el('li', '', step)));
       details.appendChild(steps);
@@ -171,14 +171,14 @@ function renderTwin(s) {
   body.replaceChildren();
   const tw = s.twin;
   if (!tw) {
-    body.appendChild(el('p', 'ops-note', 'Gemelo bio-digital no disponible.'));
+    body.appendChild(el('p', 'ops-note', 'Bio-digital twin unavailable.'));
     if (s.modules.twin_error) body.appendChild(el('p', 'ops-note mono', s.modules.twin_error));
     return;
   }
   if (tw.error) { body.appendChild(el('p', 'ops-note', tw.error)); return; }
   const grid = el('div', 'ops-stats');
-  grid.append(stat('Nivel global', tw.level), stat('SHARE', tw.share_index.toFixed(2)),
-    stat('Anomalía', tw.anomaly.toFixed(2)), stat('Paso S.H.A.R.E.', tw.step || '—'));
+  grid.append(stat('Global level', tw.level), stat('SHARE', tw.share_index.toFixed(2)),
+    stat('Anomaly', tw.anomaly.toFixed(2)), stat('S.H.A.R.E. step', tw.step || '—'));
   body.appendChild(grid);
   const bar = el('div', 'ops-bar');
   const fill = el('div', 'ops-bar-fill');
@@ -186,14 +186,14 @@ function renderTwin(s) {
   bar.appendChild(fill);
   body.appendChild(bar);
   if (tw.requires_clinician) {
-    body.appendChild(el('p', 'ops-warn', 'Se requiere confirmación clínica (CMO / flight surgeon).'));
+    body.appendChild(el('p', 'ops-warn', 'Clinical confirmation required (CMO / flight surgeon).'));
   }
   if (tw.options?.length) {
-    body.appendChild(el('p', 'ops-label', 'Contramedidas propuestas'));
+    body.appendChild(el('p', 'ops-label', 'Proposed countermeasures'));
     const list = el('ul', 'ops-options');
     tw.options.forEach(option => {
       const item = el('li');
-      item.appendChild(el('strong', '', option.label + (option.clinician ? ' · requiere médico' : '')));
+      item.appendChild(el('strong', '', option.label + (option.clinician ? ' · requires physician' : '')));
       item.appendChild(el('span', '', ' ' + option.benefits));
       list.appendChild(item);
     });
@@ -206,14 +206,14 @@ function renderOrbital(s) {
   body.replaceChildren();
   const o = s.orbital;
   if (!s.modules.orbital) {
-    body.appendChild(el('p', 'ops-note', 'Motor orbital no disponible.'));
+    body.appendChild(el('p', 'ops-note', 'Orbital engine unavailable.'));
     return;
   }
   const delay = o.delay_s < 60 ? `${o.delay_s.toFixed(1)} s` : `${(o.delay_s / 60).toFixed(0)} min`;
   const grid = el('div', 'ops-stats');
-  grid.append(stat('Riesgo global', `${o.risk}/100`), stat('Zona', o.zone),
-    stat('Dosis acum.', `${o.cum_msv.toFixed(0)} mSv · ${o.limit_pct.toFixed(0)}%`),
-    stat('Retardo ida', `${delay} · aut. ${o.autonomy_pct.toFixed(0)}%`));
+  grid.append(stat('Global risk', `${o.risk}/100`), stat('Zone', o.zone),
+    stat('Cum. dose', `${o.cum_msv.toFixed(0)} mSv · ${o.limit_pct.toFixed(0)}%`),
+    stat('One-way delay', `${delay} · auton. ${o.autonomy_pct.toFixed(0)}%`));
   body.appendChild(grid);
   o.anomalies.forEach(a => body.appendChild(el('p', 'ops-anomaly', `[${a.sev}] ${a.code}: ${a.detail}`)));
 }
@@ -222,15 +222,15 @@ function renderGateway(s) {
   const body = byId('gateway-body');
   body.replaceChildren();
   const g = s.gateway;
-  if (g.kind === 'none') { body.appendChild(el('p', 'ops-note', 'Gateway no disponible.')); return; }
+  if (g.kind === 'none') { body.appendChild(el('p', 'ops-note', 'Gateway unavailable.')); return; }
   const grid = el('div', 'ops-stats');
-  grid.append(stat('Guardados', g.total), stat('En FIFO', g.pending),
-    stat('Recibidos Tierra', g.earth), stat('Enlace', g.blackout ? 'BLACKOUT' : 'ACTIVO'));
+  grid.append(stat('Stored', g.total), stat('In FIFO', g.pending),
+    stat('Received by Earth', g.earth), stat('Link', g.blackout ? 'BLACKOUT' : 'ACTIVE'));
   body.appendChild(grid);
-  body.appendChild(el('p', 'ops-note mono', `Modo: ${g.kind}`));
+  body.appendChild(el('p', 'ops-note mono', `Mode: ${g.kind}`));
   g.rows.slice().reverse().forEach(row => {
     body.appendChild(el('p', 'ops-row mono',
-      `${row.t} · ${row.scenario} · ${row.hr ?? '—'} bpm · ${row.forwarded ? '✅ enviado' : '⏳ en FIFO'}`));
+      `${row.t} · ${row.scenario} · ${row.hr ?? '—'} bpm · ${row.forwarded ? '✅ sent' : '⏳ in FIFO'}`));
   });
   if (g.error) body.appendChild(el('p', 'ops-note mono', g.error));
 }
@@ -238,15 +238,15 @@ function renderGateway(s) {
 function renderModules(s) {
   const m = s.modules;
   byId('modules-line').textContent = [
-    `ECG: ${m.ecg_source === 'mit-bih' ? 'MIT-BIH (100.csv)' : 'sintético (no hay data/100.csv)'}`,
-    `IA: ${m.ai}`,
-    `Gemelo: ${m.twin ? 'ok' : 'no disponible'}`,
-    `Orbital: ${m.orbital ? 'ok' : 'no disponible'}`,
+    `ECG: ${m.ecg_source === 'mit-bih' ? 'MIT-BIH (100.csv)' : 'synthetic (data/100.csv not found)'}`,
+    `AI: ${m.ai}`,
+    `Twin: ${m.twin ? 'ok' : 'unavailable'}`,
+    `Orbital: ${m.orbital ? 'ok' : 'unavailable'}`,
     `Gateway: ${m.gateway}`
   ].join('  ·  ');
 }
 
-// ---------------------------------------------------------------- inicialización
+// ---------------------------------------------------------------- initialization
 export function initUI() {
   byId('astro-select').addEventListener('change', event =>
     post('/astronaut', { name: event.target.value }).catch(fail));
