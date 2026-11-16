@@ -1,8 +1,8 @@
 # =============================================================================
-# AEGIS-CREW · rules.yaml · Motor clínico del Gemelo Bio-Digital
-# Versión 2026.11.2 — añade bloque mental reforzado (NASA-STD-3001 V1 §6004)
-# Semántica: direction=high → valor >= umbral; direction=low → valor <= umbral.
-# nominal_ref = valor donde la severidad continua es 0.0.
+# MEDICJAB · rules.yaml · Clinical engine of the Bio-Digital Twin
+# Version 2026.11.2 — adds reinforced mental block (NASA-STD-3001 V1 §6004)
+# Semantics: direction=high → value >= threshold; direction=low → value <= threshold.
+# nominal_ref = value at which continuous severity is 0.0.
 # =============================================================================
 meta:
   schema: "aegis-crew/rules/1.0"
@@ -13,13 +13,13 @@ meta:
     - "NASA-STD-3001 Vol.2 (Human Factors, Habitability & Environmental Health) Rev C"
     - "OCHMO-TB-016 Rev A - Behavioral Health and Performance (technical brief)"
     - "HRP Evidence Report: Risk of Adverse Cognitive or Behavioral Conditions and Psychiatric Disorders (2025-02-10)"
-    - "AHRQ SHARE Approach (toma de decisiones compartidas)"
+    - "AHRQ SHARE Approach (shared decision-making)"
   evidence_levels:
-    standard_numeric: "El límite numérico figura en NASA-STD-3001 o documento oficial NASA que lo cita."
-    standard_qualitative: "La norma exige capacidad/vigilancia pero no fija número; umbral de ingeniería clínica."
-    clinical_framework: "Umbral de instrumento clínico validado en tierra; NASA aún no valida umbrales en vuelo (HRP Gap BMed-102)."
-    engineering_placeholder: "Valor provisional: verificar contra la tabla vigente de la norma antes de uso operativo."
-  disclaimer: "Soporte a la decisión; no sustituye al CMO/flight surgeon ni al psicólogo/psiquiatra de operaciones (BHP Op Psy)."
+    standard_numeric: "The numeric limit appears in NASA-STD-3001 or an official NASA document that cites it."
+    standard_qualitative: "The standard requires capability/surveillance but sets no number; clinical engineering threshold."
+    clinical_framework: "Threshold from a clinical instrument validated on the ground; NASA has not yet validated in-flight thresholds (HRP Gap BMed-102)."
+    engineering_placeholder: "Provisional value: verify against the current table of the standard before operational use."
+  disclaimer: "Decision support; does not replace the CMO/flight surgeon or the operational psychologist/psychiatrist (BHP Op Psy)."
 
 engine:
   domain_weights: {vital: 0.30, environment: 0.20, mental: 0.50}
@@ -39,7 +39,7 @@ engine:
     mental:      {tau_hours: 24,   confirm_up: 2, confirm_down: 3, stale_after_hours: 36}
 
 rules:
-  # ------------------------------- SIGNOS VITALES ----------------------------
+  # ------------------------------- VITAL SIGNS -------------------------------
   - id: V-SPO2
     domain: vital
     variable: spo2_pct
@@ -50,34 +50,34 @@ rules:
     weight: 1.0
     bypass_confirm: 2
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §3003/§3004 (monitoreo e intervención in-mission); V1 §4011; hipoxia en OCHMO-TB-016"
-    rationale: "La hipoxia degrada cognición y ánimo. Dos lecturas críticas consecutivas saltan el filtro."
+    citation: "NASA-STD-3001 V1 §3003/§3004 (in-mission monitoring and intervention); V1 §4011; hypoxia in OCHMO-TB-016"
+    rationale: "Hypoxia degrades cognition and mood. Two consecutive critical readings bypass the filter."
     countermeasure_tags: [vitals, environment_air, clinician]
 
   - id: V-HR-REST-HIGH
     domain: vital
     variable: hr_rest_bpm
     direction: high
-    unit: "lpm"
+    unit: "bpm"
     nominal_ref: 70
     thresholds: {caution: 90, warning: 100, critical: 120}
     weight: 0.6
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §3003; HRP Evidence Report (eje HPA/estrés agudo)"
-    rationale: "Taquicardia en reposo sostenida: estrés agudo, deshidratación o arritmia."
+    citation: "NASA-STD-3001 V1 §3003; HRP Evidence Report (HPA axis/acute stress)"
+    rationale: "Sustained resting tachycardia: acute stress, dehydration or arrhythmia."
     countermeasure_tags: [vitals, stress, rest, clinician]
 
   - id: V-HR-REST-LOW
     domain: vital
     variable: hr_rest_bpm
     direction: low
-    unit: "lpm"
+    unit: "bpm"
     nominal_ref: 62
     thresholds: {caution: 50, warning: 45, critical: 40}
     weight: 0.5
     evidence_level: clinical_framework
     citation: "NASA-STD-3001 V1 §3003/§3004"
-    rationale: "Bradicardia marcada: condicionamiento o síntoma; la línea base personal evita falsos positivos."
+    rationale: "Marked bradycardia: conditioning or symptom; the personal baseline avoids false positives."
     countermeasure_tags: [vitals, clinician]
 
   - id: V-CORE-TEMP
@@ -89,11 +89,11 @@ rules:
     thresholds: {caution: 37.8, warning: 38.5, critical: 39.5}
     weight: 0.7
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §3004; V2 §6012 (límites ambientales)"
-    rationale: "Fiebre/hipertermia: infección, fallo térmico o sobreesfuerzo en EVA."
+    citation: "NASA-STD-3001 V1 §3004; V2 §6012 (environmental limits)"
+    rationale: "Fever/hyperthermia: infection, thermal failure or overexertion during EVA."
     countermeasure_tags: [vitals, rest, clinician]
 
-  # ------------------------------- AMBIENTE ----------------------------------
+  # ------------------------------- ENVIRONMENT -------------------------------
   - id: E-CO2
     domain: environment
     variable: ppco2_mmhg
@@ -105,7 +105,7 @@ rules:
     bypass_confirm: 2
     evidence_level: engineering_placeholder
     citation: "NASA-STD-3001 V2 §6022; HRP Evidence Report (ISS 0.3-0.5 %)"
-    rationale: "CO2 elevado se asocia a cefalea y niebla mental; 7.6 mmHg ≈ 1 %."
+    rationale: "Elevated CO2 is associated with headache and mental fog; 7.6 mmHg ≈ 1 %."
     countermeasure_tags: [environment_air, vitals, cognition]
 
   - id: E-RAD-CNS-30D
@@ -117,8 +117,8 @@ rules:
     thresholds: {caution: 250, warning: 400, critical: 500}
     weight: 0.9
     evidence_level: standard_numeric
-    citation: "NASA-STD-3001 V1 (CNS 500 mGy/30 d hipocampo); V2 §6097; §6099"
-    rationale: "Marcador provisional de límite CNS; se escala al 50 % y 80 % para actuar antes de una SPE."
+    citation: "NASA-STD-3001 V1 (CNS 500 mGy/30 d hippocampus); V2 §6097; §6099"
+    rationale: "Provisional CNS limit marker; scaled to 50 % and 80 % to act before an SPE."
     countermeasure_tags: [radiation, clinician]
 
   - id: E-RAD-CNS-1Y
@@ -130,8 +130,8 @@ rules:
     thresholds: {caution: 500, warning: 800, critical: 1000}
     weight: 0.7
     evidence_level: standard_numeric
-    citation: "NASA-STD-3001 V1 (CNS 1 año = 1000 mGy); V2 §6095/§6097"
-    rationale: "Salvaguarda ante SPE en tránsito a Marte."
+    citation: "NASA-STD-3001 V1 (CNS 1 year = 1000 mGy); V2 §6095/§6097"
+    rationale: "Safeguard against SPE during transit to Mars."
     countermeasure_tags: [radiation, clinician]
 
   - id: E-NOISE-SLEEP
@@ -143,11 +143,11 @@ rules:
     thresholds: {caution: 36, warning: 40.1, critical: 50.1}
     weight: 0.4
     evidence_level: standard_numeric
-    citation: "NASA-STD-3001 V2 §6079 (NC-40 >30 d); §6078 (NC-50 áreas trabajo); §6082; Caddick 2018"
-    rationale: "El ruido es causa documentada de sueño corto en ISS; >40 NC viola V2 §6079."
+    citation: "NASA-STD-3001 V2 §6079 (NC-40 >30 d); §6078 (NC-50 work areas); §6082; Caddick 2018"
+    rationale: "Noise is a documented cause of short sleep on the ISS; >40 NC violates V2 §6079."
     countermeasure_tags: [noise, sleep]
 
-  # ------------------------- SALUD MENTAL / CONDUCTUAL -----------------------
+  # ------------------------- MENTAL / BEHAVIORAL HEALTH ----------------------
   - id: M-STRESS
     domain: mental
     variable: stress_vas_0_10
@@ -157,8 +157,8 @@ rules:
     thresholds: {caution: 5, warning: 7, critical: 9}
     weight: 0.8
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §3003, §6004 (programa soporte psicológico), §4011; HRP Gap BMed-102; Dinges 2014"
-    rationale: "El estrés autorreportado sube ~50 % en 6 meses y se acelera; se vigila tendencia."
+    citation: "NASA-STD-3001 V1 §3003, §6004 (psychological support program), §4011; HRP Gap BMed-102; Dinges 2014"
+    rationale: "Self-reported stress rises ~50 % over 6 months and accelerates; the trend is monitored."
     countermeasure_tags: [stress, mood, anxiety, workload, rest]
 
   - id: M-MENTAL-FATIGUE
@@ -170,41 +170,41 @@ rules:
     thresholds: {caution: 5, warning: 7, critical: 9}
     weight: 0.8
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §6001 (gestión fatiga/circadiano); §4011; HRP (astenia, Kanas 1991)"
-    rationale: "Fatiga es de los síntomas más reportados; forma subclínica de astenia."
+    citation: "NASA-STD-3001 V1 §6001 (fatigue/circadian management); §4011; HRP (asthenia, Kanas 1991)"
+    rationale: "Fatigue is among the most reported symptoms; a subclinical form of asthenia."
     countermeasure_tags: [fatigue, rest, sleep, workload]
 
   - id: M-PHQ2
     domain: mental
     variable: phq2_score
     direction: high
-    unit: "puntos 0-6"
+    unit: "points 0-6"
     nominal_ref: 0
     thresholds: {caution: 2, warning: 3, critical: 5}
     weight: 1.0
     evidence_level: clinical_framework
-    citation: "PHQ-2 (Kroenke 2003, corte ≥3); NASA-STD-3001 V1 §4011 y §6004; HRP (29 % síntomas depresivos Shuttle-Mir)"
-    rationale: "Subnotificación por miedo al estatus de vuelo; se actúa desde 2."
+    citation: "PHQ-2 (Kroenke 2003, cutoff ≥3); NASA-STD-3001 V1 §4011 and §6004; HRP (29 % depressive symptoms Shuttle-Mir)"
+    rationale: "Under-reporting due to fear for flight status; action is taken from 2."
     countermeasure_tags: [mood, anxiety, stress, social, clinician_support]
 
   - id: M-GAD2
     domain: mental
     variable: gad2_score
     direction: high
-    unit: "puntos 0-6"
+    unit: "points 0-6"
     nominal_ref: 0
     thresholds: {caution: 2, warning: 3, critical: 5}
     weight: 1.0
     evidence_level: clinical_framework
-    citation: "GAD-2 (Kroenke 2007, corte ≥3); NASA-STD-3001 V1 §4011 y §6004; HRP (ansiedad frecuente en Shuttle)"
-    rationale: "Ansiedad subclínica es el evento conductual más frecuente; Marte (sin evacuación) añade carga."
+    citation: "GAD-2 (Kroenke 2007, cutoff ≥3); NASA-STD-3001 V1 §4011 and §6004; HRP (frequent anxiety in Shuttle)"
+    rationale: "Subclinical anxiety is the most frequent behavioral event; Mars (no evacuation) adds burden."
     countermeasure_tags: [anxiety, stress, mood, clinician_support]
 
   - id: M-SELFHARM-ITEM
     domain: mental
     variable: phq9_item9
     direction: high
-    unit: "ítem 0-3"
+    unit: "item 0-3"
     nominal_ref: 0
     thresholds: {caution: 0.5, warning: 0.75, critical: 1.0}
     weight: 1.0
@@ -214,8 +214,8 @@ rules:
     latch_until_ack: true
     safety_override: true
     evidence_level: clinical_framework
-    citation: "PHQ-9 ítem 9; NASA-STD-3001 V1 §6004; §3004; OCHMO-TB-016 (precedente escotillas con candado)"
-    rationale: "Cualquier respuesta >0 es evento de seguridad: sin suavizado, sin histéresis, escalada obligatoria."
+    citation: "PHQ-9 item 9; NASA-STD-3001 V1 §6004; §3004; OCHMO-TB-016 (precedent of locked hatches)"
+    rationale: "Any response >0 is a safety event: no smoothing, no hysteresis, mandatory escalation."
     countermeasure_tags: [safety]
 
   - id: M-TLX
@@ -228,7 +228,7 @@ rules:
     weight: 0.6
     evidence_level: engineering_placeholder
     citation: "NASA-TLX (Hart & Staveland); NASA-STD-3001 V2 §5007"
-    rationale: "El TLX no tiene corte normativo; se usa para detectar sobrecarga."
+    rationale: "The TLX has no normative cutoff; it is used to detect overload."
     countermeasure_tags: [workload, stress, fatigue]
 
   - id: M-BEDFORD
@@ -241,63 +241,63 @@ rules:
     weight: 0.5
     confirm_up: 1
     evidence_level: standard_numeric
-    citation: "NASA-STD-3001 V2 §5007 (Bedford ≤3 nominal y ≤6 no nominal)"
-    rationale: "4-6 viola requisito en tareas nominales; 7-9 supera límite no nominal."
+    citation: "NASA-STD-3001 V2 §5007 (Bedford ≤3 nominal and ≤6 non-nominal)"
+    rationale: "4-6 violates the requirement in nominal tasks; 7-9 exceeds the non-nominal limit."
     countermeasure_tags: [workload, stress]
 
   - id: M-SLEEP
     domain: mental
     variable: sleep_hours
     direction: low
-    unit: "h/noche"
+    unit: "h/night"
     nominal_ref: 7.5
     thresholds: {caution: 6.0, warning: 5.0, critical: 4.0}
     weight: 0.9
     evidence_level: clinical_framework
     citation: "NASA-STD-3001 V1 §6001, V2 §7070; Barger 2014a; Jones 2022a"
-    rationale: "ISS duerme ~6-6.5 h pese a 8.5 h programadas; <6 h degrada vigilancia y eleva estrés."
+    rationale: "ISS crew sleep ~6-6.5 h despite 8.5 h scheduled; <6 h degrades vigilance and raises stress."
     countermeasure_tags: [sleep, fatigue, noise, rest]
 
   - id: M-COGNITION
     domain: mental
     variable: cognitive_z
     direction: low
-    unit: "z vs. basal"
+    unit: "z vs. baseline"
     nominal_ref: 0
     thresholds: {caution: -1.0, warning: -1.5, critical: -2.5}
     weight: 0.9
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §4011; Dev 2024 (z ≤ -1.5 vs. basal preflight)"
-    rationale: "Comparación contra basal preflight, no contra población."
+    citation: "NASA-STD-3001 V1 §4011; Dev 2024 (z ≤ -1.5 vs. preflight baseline)"
+    rationale: "Comparison against preflight baseline, not against the population."
     countermeasure_tags: [cognition, fatigue, sleep, rest, environment_air]
 
   - id: M-PPC-GAP
     domain: mental
     variable: days_since_ppc
     direction: high
-    unit: "días"
+    unit: "days"
     nominal_ref: 7
     thresholds: {caution: 15, warning: 21, critical: 42}
     weight: 0.4
     tau_hours: 0
     confirm_up: 1
     evidence_level: standard_qualitative
-    citation: "NASA-STD-3001 V1 §6002 (PMC programadas) y §6004; HRP (PPC cada ~2 semanas)"
-    rationale: "Regla de proceso: PPC cada 2 semanas es el principal monitoreo conductual."
+    citation: "NASA-STD-3001 V1 §6002 (scheduled PMCs) and §6004; HRP (PPC every ~2 weeks)"
+    rationale: "Process rule: a PPC every 2 weeks is the main behavioral monitoring."
     countermeasure_tags: [clinician_support, social]
 
-  # --------- NUEVAS REGLAS MENTALES (refuerzo §6004 / OCHMO-TB-016) ----------
+  # --------- NEW MENTAL RULES (reinforcement §6004 / OCHMO-TB-016) -----------
   - id: M-SOCIAL-ISOLATION
     domain: mental
     variable: social_contact_days
     direction: high
-    unit: "días sin contacto significativo"
+    unit: "days without meaningful contact"
     nominal_ref: 1
     thresholds: {caution: 3, warning: 5, critical: 7}
     weight: 0.7
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §6004 (soporte psicológico); OCHMO-TB-016 (aislamiento/confinamiento); Stuster 2016"
-    rationale: "El aislamiento prolongado es factor de riesgo conductual documentado en análogos e ISS; se cuenta desde el último contacto significativo (familia, amigo o PPC)."
+    citation: "NASA-STD-3001 V1 §6004 (psychological support); OCHMO-TB-016 (isolation/confinement); Stuster 2016"
+    rationale: "Prolonged isolation is a documented behavioral risk factor in analogs and the ISS; counted from the last meaningful contact (family, friend or PPC)."
     countermeasure_tags: [social, mood, stress, clinician_support]
 
   - id: M-ANGER-IRRITABILITY
@@ -309,8 +309,8 @@ rules:
     thresholds: {caution: 4, warning: 6, critical: 8}
     weight: 0.6
     evidence_level: clinical_framework
-    citation: "OCHMO-TB-016 (conflicto interpersonal tripulación-tierra); NASA-STD-3001 V1 §6004; Kanas 1991"
-    rationale: "La irritabilidad y el conflicto interpersonal son predictores de disfunción de tripulación en misiones largas (Shuttle-Mir, Mars-500)."
+    citation: "OCHMO-TB-016 (interpersonal crew-ground conflict); NASA-STD-3001 V1 §6004; Kanas 1991"
+    rationale: "Irritability and interpersonal conflict are predictors of crew dysfunction on long missions (Shuttle-Mir, Mars-500)."
     countermeasure_tags: [mood, stress, social, rest]
 
   - id: M-MOTIVATION
@@ -322,8 +322,8 @@ rules:
     thresholds: {caution: 5, warning: 3, critical: 1}
     weight: 0.6
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §6004; HRP Evidence Report (desmoralización, tercer cuarto); Stuster 2016"
-    rationale: "La caída de motivación marca el 'third-quarter phenomenon' y precede a síntomas depresivos."
+    citation: "NASA-STD-3001 V1 §6004; HRP Evidence Report (demoralization, third quarter); Stuster 2016"
+    rationale: "The drop in motivation marks the 'third-quarter phenomenon' and precedes depressive symptoms."
     countermeasure_tags: [mood, workload, social, rest]
 
   - id: M-APPETITE
@@ -335,82 +335,82 @@ rules:
     thresholds: {caution: 4, warning: 2, critical: 1}
     weight: 0.5
     evidence_level: clinical_framework
-    citation: "NASA-STD-3001 V1 §3004/§6004; V2 §7000 (alimentación); HRP"
-    rationale: "La pérdida de apetito es síntoma somático de depresión/estrés y predictor de ingesta calórica insuficiente en vuelo."
+    citation: "NASA-STD-3001 V1 §3004/§6004; V2 §7000 (nutrition); HRP"
+    rationale: "Loss of appetite is a somatic symptom of depression/stress and a predictor of insufficient caloric intake in flight."
     countermeasure_tags: [mood, sleep, clinician]
 
 countermeasures:
-  - {id: CM-EXERCISE-INTERVAL, label: "Ejercicio aeróbico por intervalos guiado", tags: [stress, mood, anxiety, sleep, fatigue, cognition], effort: media, requires_clinician: false,
-     benefits: "Reduce síntomas de ánimo/ansiedad subclínicos y estabiliza el ánimo; mejora BDNF.",
-     harms_limits: "Consume tiempo de agenda; riesgo musculoesquelético.",
+  - {id: CM-EXERCISE-INTERVAL, label: "Guided interval aerobic exercise", tags: [stress, mood, anxiety, sleep, fatigue, cognition], effort: media, requires_clinician: false,
+     benefits: "Reduces subclinical mood/anxiety symptoms and stabilizes mood; improves BDNF.",
+     harms_limits: "Consumes schedule time; musculoskeletal risk.",
      evidence: "Abeln 2015; Salmon 2001; Samendinger 2019"}
-  - {id: CM-SLEEP-DLS, label: "Ventana de sueño protegida + iluminación dinámica", tags: [sleep, fatigue, cognition, mood], effort: baja, requires_clinician: false,
-     benefits: "Mejora arrastre circadiano y reduce lapsos de atención.",
-     harms_limits: "Requiere cambios de agenda; no corrige ruido ambiental.",
+  - {id: CM-SLEEP-DLS, label: "Protected sleep window + dynamic lighting", tags: [sleep, fatigue, cognition, mood], effort: baja, requires_clinician: false,
+     benefits: "Improves circadian entrainment and reduces attention lapses.",
+     harms_limits: "Requires schedule changes; does not fix ambient noise.",
      evidence: "Grant 2024; Rahman 2022; V2 §8055"}
-  - {id: CM-QUIET-SLEEP, label: "Reducir ruido: tapones, pausar equipos, reubicar tareas", tags: [noise, sleep], effort: baja, requires_clinician: false,
-     benefits: "Ataca causa directa de sueño corto; cumple V2 §6079/§6082.",
-     harms_limits: "Tapones no sustituyen el límite normativo.",
+  - {id: CM-QUIET-SLEEP, label: "Reduce noise: earplugs, pause equipment, relocate tasks", tags: [noise, sleep], effort: baja, requires_clinician: false,
+     benefits: "Addresses a direct cause of short sleep; meets V2 §6079/§6082.",
+     harms_limits: "Earplugs do not replace the normative limit.",
      evidence: "NASA-STD-3001 V2 §6079/§6082; Caddick 2018"}
-  - {id: CM-REST-RECOVERY, label: "Descanso protegido (turno liviano / siesta controlada)", tags: [rest, fatigue, cognition, vitals], effort: baja, requires_clinician: false,
-     benefits: "Recupera vigilancia y baja carga fisiológica a corto plazo.",
-     harms_limits: "Cede tiempo de trabajo; mal uso puede desalinear circadiano.",
+  - {id: CM-REST-RECOVERY, label: "Protected rest (light shift / controlled nap)", tags: [rest, fatigue, cognition, vitals], effort: baja, requires_clinician: false,
+     benefits: "Restores vigilance and lowers physiological load in the short term.",
+     harms_limits: "Gives up work time; misuse can misalign circadian rhythm.",
      evidence: "NASA-STD-3001 V1 §6001; Lim & Dinges 2010"}
-  - {id: CM-WORKLOAD-REBALANCE, label: "Rebalancear carga y dar autonomía sobre agenda", tags: [workload, stress, fatigue], effort: media, requires_clinician: false,
-     benefits: "Autonomía y trabajo significativo protegen contra monotonía y sobrecarga.",
-     harms_limits: "Requiere acuerdo de tripulación; puede retrasar tareas.",
+  - {id: CM-WORKLOAD-REBALANCE, label: "Rebalance workload and give autonomy over schedule", tags: [workload, stress, fatigue], effort: media, requires_clinician: false,
+     benefits: "Autonomy and meaningful work protect against monotony and overload.",
+     harms_limits: "Requires crew agreement; may delay tasks.",
      evidence: "Kanas & Manzey 2008; Stuster 2016; V2 §5007"}
-  - {id: CM-CBT-AUTONOMO, label: "Módulos autónomos de TCC / solución de problemas (VSS, This Way Up)", tags: [mood, anxiety, stress], effort: media, requires_clinician: false,
-     benefits: "Funciona sin comunicación en tiempo real; PST redujo depresión leve en 3 sesiones.",
-     harms_limits: "Aceptabilidad mixta en análogo (HI-SEAS); no sustituye evaluación clínica si empeora.",
+  - {id: CM-CBT-AUTONOMO, label: "Autonomous CBT / problem-solving modules (VSS, This Way Up)", tags: [mood, anxiety, stress], effort: media, requires_clinician: false,
+     benefits: "Works without real-time communication; PST reduced mild depression in 3 sessions.",
+     harms_limits: "Mixed acceptability in analog (HI-SEAS); does not replace clinical evaluation if symptoms worsen.",
      evidence: "Sandoval 2017; Rose 2018; Anderson 2016"}
-  - {id: CM-SMART-OP, label: "Entrenamiento de manejo de estrés SMART-OP", tags: [stress, anxiety], effort: media, requires_clinician: false,
-     benefits: "Reduce estrés percibido y aumenta sensación de control.",
-     harms_limits: "Efecto modesto; requiere tiempo estructurado.",
+  - {id: CM-SMART-OP, label: "SMART-OP stress management training", tags: [stress, anxiety], effort: media, requires_clinician: false,
+     benefits: "Reduces perceived stress and increases sense of control.",
+     harms_limits: "Modest effect; requires structured time.",
      evidence: "Rose 2013; Rose 2019"}
-  - {id: CM-MINDFULNESS, label: "Mindfulness (sesiones breves guiadas)", tags: [stress, anxiety, mood], effort: baja, requires_clinician: false,
-     benefits: "Eficaz para estrés y moderadamente para ansiedad y ánimo.",
-     harms_limits: "Efecto pequeño sobre burnout.",
+  - {id: CM-MINDFULNESS, label: "Mindfulness (short guided sessions)", tags: [stress, anxiety, mood], effort: baja, requires_clinician: false,
+     benefits: "Effective for stress and moderately for anxiety and mood.",
+     harms_limits: "Small effect on burnout.",
      evidence: "Khoury 2015; Pagnini 2024"}
-  - {id: CM-CROPS-NATURE, label: "Cuidado de cultivos / ventana virtual de naturaleza", tags: [mood, stress, social], effort: baja, requires_clinician: false,
-     benefits: "Actividad significativa y conexión con la Tierra.",
-     harms_limits: "Si el cultivo falla puede ser contraproducente.",
+  - {id: CM-CROPS-NATURE, label: "Crop care / virtual nature window", tags: [mood, stress, social], effort: baja, requires_clinician: false,
+     benefits: "Meaningful activity and connection with Earth.",
+     harms_limits: "If the crop fails it can be counterproductive.",
      evidence: "Kelly 2017; Veggie; Kearney 2013"}
-  - {id: CM-SOCIAL-MEAL, label: "Comida o evento social de tripulación", tags: [mood, social, stress], effort: baja, requires_clinician: false,
-     benefits: "La comida compartida es el mecanismo de cohesión más citado en ISS.",
-     harms_limits: "Puede ser poco deseable si el conflicto es interpersonal.",
+  - {id: CM-SOCIAL-MEAL, label: "Crew meal or social event", tags: [mood, social, stress], effort: baja, requires_clinician: false,
+     benefits: "Shared meals are the most cited cohesion mechanism on the ISS.",
+     harms_limits: "May be undesirable if the conflict is interpersonal.",
      evidence: "Stuster 2016; Douglas 2016"}
-  - {id: CM-ASYNC-FAMILY, label: "Mensaje/video asincrónico con familia", tags: [mood, social, stress, clinician_support], effort: baja, requires_clinician: false,
-     benefits: "Mantiene vínculo pese al retardo; reduce estrés vespertino.",
-     harms_limits: "No es tiempo real; noticias difíciles pueden aumentar malestar.",
+  - {id: CM-ASYNC-FAMILY, label: "Asynchronous message/video with family", tags: [mood, social, stress, clinician_support], effort: baja, requires_clinician: false,
+     benefits: "Maintains the bond despite the delay; reduces evening stress.",
+     harms_limits: "Not real-time; difficult news can increase distress.",
      evidence: "Bell 2025; Ott 2016 (ANSIBLE); V2 §10093"}
-  - {id: CM-VITALS-RECHECK, label: "Repetir medición y verificar sensor", tags: [vitals], effort: baja, requires_clinician: false,
-     benefits: "Descarta artefacto antes de escalar.",
-     harms_limits: "Retrasa 5-10 min; no aplica si hay síntomas.",
+  - {id: CM-VITALS-RECHECK, label: "Repeat measurement and check sensor", tags: [vitals], effort: baja, requires_clinician: false,
+     benefits: "Rules out artifact before escalating.",
+     harms_limits: "Delays 5-10 min; not applicable if symptoms are present.",
      evidence: "NASA-STD-3001 V1 §3003"}
-  - {id: CM-ENV-AIR, label: "Acción ambiental: ventilación, cambio de módulo, purga CO2", tags: [environment_air, vitals, cognition], effort: media, requires_clinician: false,
-     benefits: "Corrige la causa y no solo el síntoma.",
-     harms_limits: "Puede interrumpir tareas; requiere procedimiento aprobado.",
+  - {id: CM-ENV-AIR, label: "Environmental action: ventilation, module change, CO2 purge", tags: [environment_air, vitals, cognition], effort: media, requires_clinician: false,
+     benefits: "Fixes the cause, not just the symptom.",
+     harms_limits: "May interrupt tasks; requires an approved procedure.",
      evidence: "NASA-STD-3001 V2 §6017/§6022"}
-  - {id: CM-RAD-SHELTER, label: "Refugio de radiación / reprogramar EVA (ALARA)", tags: [radiation], effort: media, requires_clinician: false,
-     benefits: "Reduce dosis acumulada hacia CNS.",
-     harms_limits: "Afecta EVA; confinamiento adicional empeora aislamiento.",
+  - {id: CM-RAD-SHELTER, label: "Radiation shelter / reschedule EVA (ALARA)", tags: [radiation], effort: media, requires_clinician: false,
+     benefits: "Reduces cumulative dose to the CNS.",
+     harms_limits: "Affects EVA; additional confinement worsens isolation.",
      evidence: "NASA-STD-3001 V2 §6097/§6099"}
-  - {id: CM-PPC-ASYNC, label: "PPC asincrónica con psicólogo/psiquiatra de tierra", tags: [mood, anxiety, stress, clinician_support, clinician, safety], effort: media, requires_clinician: true,
-     benefits: "Evaluación experta y espacio confidencial; monitoreo conductual principal en ISS.",
-     harms_limits: "Retardo de comunicación; temor a estatus de vuelo frena sinceridad.",
+  - {id: CM-PPC-ASYNC, label: "Asynchronous PPC with ground psychologist/psychiatrist", tags: [mood, anxiety, stress, clinician_support, clinician, safety], effort: media, requires_clinician: true,
+     benefits: "Expert evaluation and confidential space; primary behavioral monitoring on the ISS.",
+     harms_limits: "Communication delay; fear for flight status inhibits candor.",
      evidence: "NASA-STD-3001 V1 §6002/§6004; HRP"}
-  - {id: CM-PMC-CMO, label: "Consulta médica privada (PMC) con CMO / flight surgeon", tags: [vitals, radiation, clinician, safety], effort: media, requires_clinician: true,
-     benefits: "Diagnóstico diferencial y acceso al botiquín/protocolo médico.",
-     harms_limits: "Ocupa tiempo del CMO; puede requerir apoyo asincrónico.",
+  - {id: CM-PMC-CMO, label: "Private medical consultation (PMC) with CMO / flight surgeon", tags: [vitals, radiation, clinician, safety], effort: media, requires_clinician: true,
+     benefits: "Differential diagnosis and access to the medical kit/protocol.",
+     harms_limits: "Occupies CMO time; may require asynchronous support.",
      evidence: "NASA-STD-3001 V1 §3004/§6002"}
-  - {id: CM-PHARMA, label: "Farmacoterapia (solo con autorización clínica)", tags: [anxiety, mood, sleep, clinician], effort: baja, requires_clinician: true,
-     benefits: "Alivio sintomático cuando lo conductual no basta.",
-     harms_limits: "62.9 % de fármacos ISS pueden reducir alerta; hipnóticos limitan respuesta a alarmas.",
+  - {id: CM-PHARMA, label: "Pharmacotherapy (only with clinical authorization)", tags: [anxiety, mood, sleep, clinician], effort: baja, requires_clinician: true,
+     benefits: "Symptomatic relief when behavioral measures are not enough.",
+     harms_limits: "62.9 % of ISS drugs may reduce alertness; hypnotics limit response to alarms.",
      evidence: "Roma 2021; Friedman & Bui 2017; Wotring 2015"}
-  - {id: CM-SAFETY-PROTOCOL, label: "Protocolo de seguridad: acompañamiento + contacto clínico urgente", tags: [safety], effort: alta, requires_clinician: true,
-     benefits: "Protege a la persona y a la tripulación mientras se evalúa.",
-     harms_limits: "Carga operativa alta; trato respetuoso para no aumentar aislamiento.",
+  - {id: CM-SAFETY-PROTOCOL, label: "Safety protocol: accompaniment + urgent clinical contact", tags: [safety], effort: alta, requires_clinician: true,
+     benefits: "Protects the person and the crew while the evaluation takes place.",
+     harms_limits: "High operational burden; respectful handling so as not to increase isolation.",
      evidence: "NASA-STD-3001 V1 §6004; OCHMO-TB-016"}
 
 share:
@@ -418,21 +418,21 @@ share:
   min_improvement: 0.10
   prompts:
     seek:
-      - "Resuma el problema en lenguaje simple y cite qué regla se activó."
-      - "Informe que existen opciones y que su participación es importante; puede decidir no participar o delegar."
-      - "Ofrezca incluir a un compañero de tripulación o apoyo familiar si lo desea."
+      - "Summarize the problem in plain language and cite which rule was triggered."
+      - "Explain that options exist and that their participation matters; they may decide not to participate or to delegate."
+      - "Offer to include a crewmate or family support if they wish."
     help:
-      - "Compare beneficios y daños de cada opción, incluida la observación activa."
-      - "Exprese los números simple y explique lo que se sabe y lo que no."
-      - "Verifique comprensión: pida que explique las opciones con sus palabras (teach-back)."
+      - "Compare the benefits and harms of each option, including active observation."
+      - "Express numbers simply and explain what is known and what is not."
+      - "Check understanding: ask them to explain the options in their own words (teach-back)."
     assess:
-      - "Pregunte qué es lo más importante para usted ahora y reconozca esos valores."
+      - "Ask what matters most to them right now and acknowledge those values."
     reach:
-      - "Pregunte si está listo para decidir o si necesita más tiempo o información."
-      - "Confirme la decisión y programe seguimiento; delegar la decisión también es válido."
+      - "Ask whether they are ready to decide or need more time or information."
+      - "Confirm the decision and schedule follow-up; delegating the decision is also valid."
     evaluate:
-      - "En el seguimiento compare el estado con la línea de partida; si no mejora, vuelva a revisar opciones."
+      - "At follow-up compare the state with the baseline; if it has not improved, review the options again."
   assess_questions:
-    - "¿Qué le importa más hoy: dormir, privacidad, contacto con la familia, rendimiento en tareas críticas?"
-    - "¿Qué ha ayudado antes en situaciones parecidas y qué no?"
-    - "¿Qué efectos secundarios o costos de agenda no está dispuesto a aceptar?"
+    - "What matters most to you today: sleep, privacy, contact with family, performance on critical tasks?"
+    - "What has helped before in similar situations, and what has not?"
+    - "What side effects or schedule costs are you not willing to accept?"
