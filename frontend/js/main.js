@@ -1,4 +1,4 @@
-// Punto de entrada: conecta interfaz, ECG y backend.
+// Entry point: connects UI, ECG, and backend.
 import { connect } from './api.js';
 import { initUI, render, setConnection } from './ui.js';
 import { pushEcg, startECG } from './ecg.js';

@@ -1,7 +1,4 @@
-"""SimulationRuntime: orquesta los motores del Proyecto A y produce el estado que consume el frontend.
-
-No modifica ningún archivo de backend/engines/. Cada módulo es opcional: si falta una dependencia
-(TensorFlow, Mosquitto, pydantic…) el runtime sigue funcionando y lo informa en state["modules"].
+"""SimulationRuntime: orchestrates core engines for MEDICJAB and streams data to the frontend.
 """
 from __future__ import annotations
 
@@ -21,7 +18,6 @@ ENGINES = Path(__file__).resolve().parent / "engines"
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-# Los motores del Proyecto A usan imports planos (from twin import ...): los exponemos en sys.path.
 if str(ENGINES) not in sys.path:
     sys.path.insert(0, str(ENGINES))
 
@@ -30,34 +26,25 @@ from eclss_engine import ECLSSTelemetrySimulator  # noqa: E402
 
 try:
     from scenarios import ASTRONAUTS, LEGS, ORBITS, PROTOCOLS, SCENARIOS
-except ImportError:  # ejecutado como paquete: backend.runtime
+except ImportError:
     from .scenarios import ASTRONAUTS, LEGS, ORBITS, PROTOCOLS, SCENARIOS
 
 FS = 360                    # Hz (MIT-BIH)
-WIN_S = 10                  # segundos que analiza el DSP en cada tick
+WIN_S = 10                  # DSP analysis window (seconds)
 N = FS * WIN_S
-SEG_BEFORE, SEG_AFTER = 90, 126   # 216 muestras alrededor de cada pico R (entrada de la CNN)
-DISPLAY_DECIM = 3           # 360 Hz -> 120 Hz hacia el navegador
-DISPLAY_LAG_S = 2           # solo se emite señal a >2 s del borde de la ventana (sin efectos de borde de filtfilt)
+SEG_BEFORE, SEG_AFTER = 90, 126   # 216 samples around R peak for CNN
+DISPLAY_DECIM = 3           # 360 Hz -> 120 Hz streaming to UI
+DISPLAY_LAG_S = 2           # offset buffer to prevent filter edge artifacts
 CREW_ID = "CDR-01"
 HRV_DESC = {
-    "NORMAL_STABLE": ("", "Ritmo sinusal estable"),
-    "MODERATE_STRESS": ("warn", "HRV reducida / estrés moderado"),
-    "CRITICAL_ALERT": ("crit", "Taquicardia / HRV crítica"),
-    "INSUFFICIENT_DATA": ("", "Adquiriendo señal…"),
+    "NORMAL_STABLE": ("", "Stable sinus rhythm"),
+    "MODERATE_STRESS": ("warn", "Reduced HRV / moderate stress"),
+    "CRITICAL_ALERT": ("crit", "Tachycardia / critical HRV"),
+    "INSUFFICIENT_DATA": ("", "Acquiring signal…"),
 }
 
 
-# ----------------------------------------------------------------------------------------------
-# Utilidades
-# ----------------------------------------------------------------------------------------------
 def synthetic_ecg(fs=FS, secs=60, variability=0.22):
-    """ECG sintético de respaldo (el de app.py del Proyecto A).
-
-    Cambio respecto a A: la variabilidad RR sube de ±12 % a ±22 %. Con ±12 % el SDNN medido (~36 ms)
-    queda justo bajo el umbral de 40 ms del DSP y el estado en reposo parpadeaba entre NOMINAL y ESTRÉS.
-    Con ±22 % el SDNN en reposo es 47-88 ms (adulto sano). Con un 100.csv real este valor no se usa.
-    """
     rng = np.random.default_rng(1)
     base_n = int(0.83 * fs)
     x = np.linspace(0, 1, base_n)
@@ -73,7 +60,6 @@ def synthetic_ecg(fs=FS, secs=60, variability=0.22):
 
 
 def load_signal():
-    """Busca 100.csv (MIT-BIH) en data/ o en la raíz; si no existe usa el ECG sintético."""
     for p in (DATA / "100.csv", ROOT / "100.csv"):
         if p.exists():
             df = pd.read_csv(p)
@@ -85,45 +71,37 @@ def load_signal():
 
 
 def cabin_alerts(env):
-    """Umbrales de cabina (basados en app.py del Proyecto A, recalibrados para que NORMAL sea NOMINAL).
-
-    A usaba CO₂ > 1000 ppm y radiación > 1 / > 10 µSv/h (escala de suelo terrestre). Pero el propio ECLSS
-    de A produce 3421 ppm de CO₂ en NORMAL (2.6 mmHg) y ~108 µSv/h al pasar por la Anomalía del Atlántico Sur
-    (lat -26, lon -46), así que NORMAL salía en CRÍTICO. Nuevos umbrales (ajústalos con Dick/Bryan):
-      CO₂: aviso > 4000 ppm, crítico > 5000 ppm  ·  Radiación: aviso > 150, crítico > 300 µSv/h (SPE = 509)  ·  VOCs: aviso > 600 ppb (NORMAL = 345).
-    """
     a = []
     co2 = env["co2_ppm"]
     if co2 > 5000:
-        a.append(("error", f"CO₂ de cabina crítico: {co2:.0f} ppm"))
+        a.append(("error", f"Critical cabin CO₂: {co2:.0f} ppm"))
     elif co2 > 4000:
-        a.append(("warning", f"CO₂ de cabina elevado: {co2:.0f} ppm"))
+        a.append(("warning", f"Elevated cabin CO₂: {co2:.0f} ppm"))
     p = env["pressure_kpa"]
     if p < 90:
-        a.append(("error", f"Despresurización crítica: {p:.1f} kPa"))
+        a.append(("error", f"Critical depressurization: {p:.1f} kPa"))
     elif p < 95:
-        a.append(("warning", f"Despresurización: presión de cabina {p:.1f} kPa"))
+        a.append(("warning", f"Depressurization alert: cabin pressure {p:.1f} kPa"))
     rad = env["radiation_usv_h"]
     if rad > 300:
-        a.append(("error", f"Radiación crítica (SPE): {rad:.1f} µSv/h"))
+        a.append(("error", f"Critical radiation (SPE): {rad:.1f} µSv/h"))
     elif rad > 150:
-        a.append(("warning", f"Radiación elevada: {rad:.2f} µSv/h"))
+        a.append(("warning", f"Elevated radiation: {rad:.2f} µSv/h"))
     if env["vocs_ppb"] > 600:
-        a.append(("warning", f"VOCs elevados: {env['vocs_ppb']:.0f} ppb"))
+        a.append(("warning", f"Elevated VOCs: {env['vocs_ppb']:.0f} ppb"))
     if not 18 <= env["temperature_c"] <= 27:
-        a.append(("warning", f"Temperatura de cabina fuera de rango: {env['temperature_c']:.1f} °C"))
+        a.append(("warning", f"Cabin temperature out of range: {env['temperature_c']:.1f} °C"))
     return a
 
 
 def protocol_for(msg):
     for key, steps in PROTOCOLS.items():
-        if key in msg or (key == "Taquicardia" and "HRV" in msg):
+        if key.lower() in msg.lower() or (key == "Tachycardia" and "HRV" in msg) or (key == "Taquicardia" and "HRV" in msg):
             return key, steps
     return None, []
 
 
 class LocalGateway:
-    """Alternativa sin Mosquitto: JosePipelineEngine (SQLite + búfer FIFO) con la misma interfaz que GatewayEngine."""
     kind = "sqlite-local"
 
     def __init__(self, db_path):
@@ -140,7 +118,7 @@ class LocalGateway:
     @blackout.setter
     def blackout(self, value):
         pending = len(self.engine.fifo_buffer)
-        self.engine.toggle_blackout(bool(value))        # al restaurar, hace el batch-flush
+        self.engine.toggle_blackout(bool(value))
         if not value:
             self.earth_count += pending
 
@@ -164,9 +142,6 @@ class LocalGateway:
         return out
 
 
-# ----------------------------------------------------------------------------------------------
-# Runtime
-# ----------------------------------------------------------------------------------------------
 class SimulationRuntime:
     def __init__(self):
         self.lock = threading.RLock()
@@ -179,14 +154,13 @@ class SimulationRuntime:
         self._std = float(np.std(self.sig))
         self._fast_cache: dict[float, np.ndarray] = {}
 
-        # estado de la simulación
         self.scenario = "normal"
         self.speed = 1.0
         self.astro = "Cmdr. Rivera"
         self.orbit_name = "Órbita baja"
         self.orbit_gravity = 0.0
         self.toggles = {"noise": False, "raw": True, "ai": False}
-        self.n = N + DISPLAY_LAG_S * FS          # contador absoluto de muestras
+        self.n = N + DISPLAY_LAG_S * FS
         self.emitted = self.n - (DISPLAY_LAG_S + 1) * FS
         self.last_t = time.time()
         self.t0 = time.time()
@@ -196,7 +170,6 @@ class SimulationRuntime:
         self.hist = []
         self.last_state: dict | None = None
 
-        # módulos opcionales
         self.modules = {"orbital": False, "twin": False, "gateway": "none", "ai": "off"}
         self._init_orbital()
         self.bridge = self._init_twin()
@@ -204,7 +177,6 @@ class SimulationRuntime:
         self.ai = None
         self._ai_thread = None
 
-    # ---- carga de módulos -----------------------------------------------------------------
     def _init_orbital(self):
         try:
             import monitor_bioorbital  # noqa: F401
@@ -223,7 +195,7 @@ class SimulationRuntime:
             return None
 
     def _init_gateway(self):
-        try:                                           # 1º: gateway MQTT del Proyecto A (requiere Mosquitto)
+        try:
             import gateway_engine
             gateway_engine.DB_FILE = str(DATA / "local_buffer.db")
             gw = gateway_engine.GatewayEngine()
@@ -231,8 +203,8 @@ class SimulationRuntime:
             self.modules["gateway"] = gw.kind
             return gw
         except Exception as e:
-            self.modules["gateway_note"] = f"MQTT no disponible ({type(e).__name__}); uso SQLite local"
-        try:                                           # 2º: pipeline SQLite + FIFO sin broker
+            self.modules["gateway_note"] = f"MQTT unavailable ({type(e).__name__}); using local SQLite"
+        try:
             gw = LocalGateway(DATA / "telemetry.db")
             self.modules["gateway"] = gw.kind
             return gw
@@ -241,7 +213,6 @@ class SimulationRuntime:
             return None
 
     def _load_ai_async(self):
-        """TensorFlow tarda en cargar: se hace en un hilo la primera vez que se activa la IA."""
         if self._ai_thread and self._ai_thread.is_alive():
             return
         self.modules["ai"] = "loading"
@@ -258,7 +229,6 @@ class SimulationRuntime:
         self._ai_thread = threading.Thread(target=work, daemon=True)
         self._ai_thread.start()
 
-    # ---- acciones (las llama la API) -------------------------------------------------------
     def _source(self):
         if abs(self.speed - 1.0) < 1e-6:
             return self.sig
@@ -270,7 +240,6 @@ class SimulationRuntime:
         return self._fast_cache[key]
 
     def _push_gravity(self, g):
-        # trigger_crisis() reinicia _base; la gravedad se reaplica después
         self.sim._base["gravity_g"] = float(g)
 
     def start_blackout(self):
@@ -293,7 +262,7 @@ class SimulationRuntime:
             sc = SCENARIOS[key]
             self.scenario = key
             if key == "normal" and self.bridge:
-                self.bridge.reset()                    # limpia dosis acumulada y latches del gemelo
+                self.bridge.reset()
                 self.tw = None
             self.sim.trigger_crisis(sc["crisis"])
             self._push_gravity(sc["gravity_g"] or self.orbit_gravity)
@@ -303,7 +272,7 @@ class SimulationRuntime:
             else:
                 self.end_blackout()
             if sc["psych"] and self.bridge:
-                self.bridge.submit_psych(sc["psych"])  # mini-test mental -> gemelo (aislamiento)
+                self.bridge.submit_psych(sc["psych"])
 
     def set_toggle(self, name, value):
         if name not in self.toggles:
@@ -325,7 +294,7 @@ class SimulationRuntime:
             self.orbit_name = name
             self.orbit_gravity = o["gravity_g"] or 0.0
             self.sim.set_orbital_params(altitude_km=o["altitude_km"])
-            self.sim.trigger_crisis(self.sim.active_crisis)   # recopia altitud al escenario activo
+            self.sim.trigger_crisis(self.sim.active_crisis)
             self._push_gravity(SCENARIOS[self.scenario]["gravity_g"] or self.orbit_gravity)
 
     def reset_all(self):
@@ -334,7 +303,6 @@ class SimulationRuntime:
             self.set_orbit("Órbita baja")
             self.apply_scenario("normal")
 
-    # ---- tick: 1 vez por segundo -----------------------------------------------------------
     def tick(self):
         with self.lock:
             now = time.time()
@@ -345,7 +313,6 @@ class SimulationRuntime:
             sc = SCENARIOS[self.scenario]
             prof = sc["profile"]
 
-            # 1) ECG fuente (+ ruido opcional) -> DSP del Proyecto A
             idx = np.arange(self.n - N, self.n)
             src = self._source()
             x = src[idx % len(src)].copy()
@@ -356,7 +323,6 @@ class SimulationRuntime:
             res = self.dsp.process_pipeline(x)
             filt, peaks, m = res["filtered_ecg"], res["r_peaks"], res["metrics"]
 
-            # 2) Trozo de ECG nuevo para el navegador (120 Hz, ya filtrado)
             end_abs = self.n - DISPLAY_LAG_S * FS
             a = np.arange(self.emitted, end_abs)
             a = a[a % DISPLAY_DECIM == 0]
@@ -369,14 +335,12 @@ class SimulationRuntime:
                 "filt": np.round(filt[rel] / self._scale, 4).tolist(),
             }
 
-            # 3) Telemetría de cabina (ECLSS)
             pkt = self.sim.generate_telemetry_packet()
             env = pkt["environment"]
             self.hist.append(env)
             self.hist = self.hist[-90:]
             spo2 = int(max(85, 98 - max(0.0, env["co2_ppm"] - 2000) / 600))
 
-            # 4) IA (TFLite), solo si está cargada
             ai_res = None
             if self.ai is not None and self.toggles["ai"]:
                 try:
@@ -394,25 +358,22 @@ class SimulationRuntime:
                 except Exception as e:
                     self.modules["ai_error"] = f"{type(e).__name__}: {e}"
 
-            # 5) Alertas
             alerts = []
             if m["status"] == "CRITICAL_ALERT":
-                alerts.append(("error", f"Taquicardia / HRV crítica: {m['BPM']} bpm, SDNN {m['SDNN']} ms"))
+                alerts.append(("error", f"Tachycardia / critical HRV: {m['BPM']} bpm, SDNN {m['SDNN']} ms"))
             elif m["status"] == "MODERATE_STRESS":
-                alerts.append(("warning", f"Estrés moderado: {m['BPM']} bpm, SDNN {m['SDNN']} ms"))
+                alerts.append(("warning", f"Moderate stress: {m['BPM']} bpm, SDNN {m['SDNN']} ms"))
             if ai_res and ai_res["label"] == "ARRHYTHMIA":
-                alerts.append(("error", f"IA: posible arritmia ({ai_res['n_arr']}/{ai_res['n']} latidos)"))
+                alerts.append(("error", f"AI: arrhythmia detected ({ai_res['n_arr']}/{ai_res['n']} beats)"))
             if spo2 < 92:
-                alerts.append(("error", f"SpO₂ crítica: {spo2}%"))
+                alerts.append(("error", f"Critical SpO₂: {spo2}%"))
             alerts += cabin_alerts(env)
-            # Signos NO medidos por el Proyecto A (perfil simulado del Proyecto B)
-            for label, key in (("Presión arterial", "pa"), ("Glucosa", "glu"), ("Temperatura", "temp")):
+            for label, key in (("Blood pressure", "pa"), ("Glucose", "glu"), ("Temperature", "temp")):
                 cls = prof[f"{key}_class"]
                 if cls:
                     alerts.append(("error" if cls == "crit" else "warning",
-                                   f"{label} (simulada): {prof[f'{key}_desc']}"))
+                                   f"{label} (simulated): {prof[f'{key}_desc']}"))
 
-            # 6) Gemelo bio-digital
             if self.bridge:
                 self.tw = self.bridge.step(m["BPM"], spo2, env)
             tw = self.tw
@@ -420,7 +381,6 @@ class SimulationRuntime:
             if tw_ok:
                 alerts += [(lvl, msg) for lvl, msg in tw["alerts"]]
 
-            # 7) Gateway (MQTT o SQLite local)
             blackout = bool(self.gw and self.gw.blackout)
             if self.gw:
                 try:
@@ -439,39 +399,37 @@ class SimulationRuntime:
                     self.gw.last_error = f"publish: {e}"
             gstats = self.gw.stats() if self.gw else {"total": 0, "pending": 0, "forwarded": 0}
 
-            # 8) Análisis orbital (Monitor Bio-Orbital)
             full = self.sim.last_full_analysis()
             rad, met = full["radiation"], full["metrics"]
 
-            # 9) Estado para el frontend
             if any(l == "error" for l, _ in alerts):
-                bcls, btxt = "critico", "ESTADO: CRÍTICO"
+                bcls, btxt = "critico", "STATUS: CRITICAL"
             elif alerts:
-                bcls, btxt = "alerta", "ESTADO: ALERTA"
+                bcls, btxt = "alerta", "STATUS: ALERT"
             else:
-                bcls, btxt = "", "ESTADO: NOMINAL"
+                bcls, btxt = "", "STATUS: NOMINAL"
 
             days = int(self.sim.orbit["mission_days"])
             elapsed_h = days * 24 + int((now - self.t0) // 3600)
             elapsed_m = int(((now - self.t0) % 3600) // 60)
             meta = (f"{self.astro} · {ASTRONAUTS[self.astro]} · {self.orbit_name} · "
-                    f"Día {days} · T+{elapsed_h}:{elapsed_m:02d}")
+                    f"Day {days} · T+{elapsed_h}:{elapsed_m:02d}")
 
             delay = met["delay_oneway_s"]
             delay_txt = f"{delay:.1f}s" if delay < 60 else f"{delay / 60:.0f} min"
             if blackout:
                 secs = int(now - self.blackout_since) if self.blackout_since else 0
-                comms_title = f"Enlace con Tierra: BLACKOUT ({secs} s)"
-                comms_sub = f"Modo autónomo · {gstats['pending']} paquetes en búfer FIFO"
+                comms_title = f"Earth Link: BLACKOUT ({secs} s)"
+                comms_sub = f"Autonomous mode · {gstats['pending']} packets in FIFO buffer"
             elif self.last_sync and gstats["pending"] > 0:
-                comms_title = f"Enlace restablecido: retransmitiendo ({gstats['pending']})"
-                comms_sub = f"Escenario de cabina: {pkt['cabin_status']}"
+                comms_title = f"Link restored: retransmitting ({gstats['pending']})"
+                comms_sub = f"Cabin scenario: {pkt['cabin_status']}"
             elif self.last_sync and now - self.last_sync["t"] < 15:
-                comms_title = f"Enlace restablecido: {self.last_sync['n']} paquetes enviados"
-                comms_sub = f"Escenario de cabina: {pkt['cabin_status']}"
+                comms_title = f"Link restored: {self.last_sync['n']} packets sent"
+                comms_sub = f"Cabin scenario: {pkt['cabin_status']}"
             else:
-                comms_title = f"Enlace con Tierra: nominal ({delay_txt})"
-                comms_sub = f"Escenario de cabina: {pkt['cabin_status']}"
+                comms_title = f"Earth Link: nominal ({delay_txt})"
+                comms_sub = f"Cabin scenario: {pkt['cabin_status']}"
 
             fc_cls, fc_desc = HRV_DESC.get(m["status"], ("", ""))
             heart_pt = "crit" if (fc_cls == "crit" or spo2 < 92) else ("warn" if (
@@ -507,14 +465,14 @@ class SimulationRuntime:
                     "animo": {"val": prof["mood"], "cls": prof["mood_class"], "desc": prof["mood_desc"],
                               "simulated": True},
                     "rad": {"val": f"{rad['cum_msv']:.2f}", "cls": rad_cls,
-                            "desc": f"Ahora: {rad['total']:.2f} µSv/h · {rad['limit_pct']:.0f}% límite NASA"},
+                            "desc": f"Now: {rad['total']:.2f} µSv/h · {rad['limit_pct']:.0f}% NASA limit"},
                     "ia": {"title": prof["ia_title"], "desc": ia_desc, "cls": ia_cls},
                 },
                 "points": {"heart": heart_pt, "abdomen": abd_pt, "legs": legs_pt},
                 "organs": {
                     "heart": (f"{fc_desc}: {m['BPM']:.0f} bpm · SDNN {m['SDNN']:.0f} ms · "
-                              f"RMSSD {m['RMSSD']:.0f} ms · SpO₂ {spo2}% · PA {pa_txt} mmHg."),
-                    "abdomen": f"Glucosa {prof['glu']} mg/dL: {prof['glu_desc']}. Temp. {prof['temp']:.1f} °C.",
+                              f"RMSSD {m['RMSSD']:.0f} ms · SpO₂ {spo2}% · BP {pa_txt} mmHg."),
+                    "abdomen": f"Glucose {prof['glu']} mg/dL: {prof['glu_desc']}. Temp. {prof['temp']:.1f} °C.",
                     "legs": LEGS[self.scenario],
                 },
                 "alerts": [{"level": l, "msg": msg, "protocol": protocol_for(msg)[0],

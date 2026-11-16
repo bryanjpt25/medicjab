@@ -1,9 +1,6 @@
-"""Servidor local FastAPI: API REST + WebSocket + frontend estático.
+"""Local FastAPI Server: REST API + WebSocket + Static Frontend.
 
     python run.py            ->  http://127.0.0.1:8000
-
-El runtime (backend/runtime.py) hace un tick por segundo y el resultado se empuja por WebSocket
-a todos los navegadores conectados. El frontend solo dibuja; toda la lógica vive aquí.
 """
 from __future__ import annotations
 
@@ -22,13 +19,13 @@ from pydantic import BaseModel
 from .runtime import SimulationRuntime
 from .scenarios import ASTRONAUTS, ORBITS, SCENARIOS
 
-log = logging.getLogger("astro")
+log = logging.getLogger("medicjab")
 FRONTEND = Path(__file__).resolve().parents[1] / "frontend"
 TICK_S = 1.0
 
 
 class Hub:
-    """Mantiene los WebSockets abiertos y difunde cada estado."""
+    """Manages open WebSocket clients and broadcasts state updates."""
 
     def __init__(self):
         self.clients: set[WebSocket] = set()
@@ -46,7 +43,7 @@ class Hub:
 
 rt: SimulationRuntime | None = None
 hub = Hub()
-wake = asyncio.Event()      # una acción del usuario fuerza un tick inmediato
+wake = asyncio.Event()
 
 
 async def sim_loop():
@@ -55,7 +52,7 @@ async def sim_loop():
             state = await asyncio.to_thread(rt.tick)
             await hub.broadcast(json.dumps(state, default=str))
         except Exception:
-            log.exception("error en el tick de simulación")
+            log.exception("Error in simulation tick")
         try:
             await asyncio.wait_for(wake.wait(), timeout=TICK_S)
         except asyncio.TimeoutError:
@@ -66,14 +63,13 @@ async def sim_loop():
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
     global rt
-    rt = await asyncio.to_thread(SimulationRuntime)     # carga motores (puede tardar unos segundos)
+    rt = await asyncio.to_thread(SimulationRuntime)
     task = asyncio.create_task(sim_loop())
     yield
     task.cancel()
 
 
-app = FastAPI(title="Astro Health Monitor", lifespan=lifespan)
-# Permite abrir el frontend desde Live Server (otro puerto) apuntando a ?api=http://127.0.0.1:8000
+app = FastAPI(title="MEDICJAB", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
@@ -100,7 +96,7 @@ def _act(fn, *args):
     try:
         fn(*args)
     except KeyError as e:
-        raise HTTPException(status_code=422, detail=f"valor no válido: {e}")
+        raise HTTPException(status_code=422, detail=f"Invalid value: {e}")
     wake.set()
     return {"ok": True}
 
@@ -113,7 +109,7 @@ def health():
 @app.get("/api/state")
 def get_state():
     if rt is None or rt.last_state is None:
-        raise HTTPException(status_code=503, detail="iniciando")
+        raise HTTPException(status_code=503, detail="Initializing system...")
     return rt.last_state
 
 
@@ -147,24 +143,11 @@ def reset():
     return _act(rt.reset_all)
 
 
-# =========================================================================
-# NUEVA RUTA: Recibir la evaluación mental desde el frontend
-# =========================================================================
 @app.post("/api/ingest")
 def ingest_psych_test(body: IngestIn):
-    """
-    Recibe los puntajes del PHQ-9 / GAD-7 desde evaluacion.html.
-    Aquí puedes guardar los datos en tu base de datos, pasarlos al runtime
-    o simplemente imprimirlos en la consola para ver que funcionó.
-    """
-    log.info(f"Recibida evaluación mental para {body.crew_id}: {body.psych}")
-    
-    # Ejemplo: si tu runtime tiene un método para actualizar el estado mental, lo llamamos aquí.
-    # if rt and hasattr(rt, "update_mental_state"):
-    #     rt.update_mental_state(body.psych)
-    #     wake.set()
-    
-    return {"ok": True, "message": "Evaluación mental procesada correctamente"}
+    """Receives psychological assessment scores (PHQ-9 / GAD-7) from evaluacion.html."""
+    log.info(f"Received psychological assessment for {body.crew_id}: {body.psych}")
+    return {"ok": True, "message": "Psychological assessment processed successfully"}
 
 
 @app.websocket("/ws")
@@ -175,12 +158,11 @@ async def ws_endpoint(ws: WebSocket):
         if rt and rt.last_state:
             await ws.send_text(json.dumps(rt.last_state, default=str))
         while True:
-            await ws.receive_text()          # solo para detectar la desconexión
+            await ws.receive_text()
     except WebSocketDisconnect:
         pass
     finally:
         hub.clients.discard(ws)
 
 
-# Debe ir al final: sirve index.html, css/, js/ y assets/
 app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="frontend")

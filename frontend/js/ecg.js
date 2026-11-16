@@ -1,9 +1,9 @@
 import { state } from './state.js';
 
-// ECG real: el backend filtra con el DSP del Proyecto A (notch 60 Hz + Butterworth + Pan-Tompkins)
+// Real ECG: backend filters with DSP (notch 60 Hz + Butterworth + Pan-Tompkins)
 // and sends ~120 samples every second (raw + filtered, already normalized). Here they are only replayed
-// en tiempo real con un desplazamiento continuo.
-const RING = 480;                       // 4 s a 120 Hz
+// in real-time with a continuous scroll.
+const RING = 480;                       // 4 s at 120 Hz
 const ringRaw = new Array(RING).fill(0);
 const ringFilt = new Array(RING).fill(0);
 const queue = [];
