@@ -501,7 +501,7 @@ def live_panel():
             with st.expander(f"⚠️ Engineering anomalies ({len(full['anomalies'])})", expanded=True):
                 for a in full["anomalies"]:
                     sev = a["severity"]
-                    fn = st.error if sev.upper().startswith("CR") else (st.warning if sev.upper() in ("ALTA", "HIGH", "ADVERTENCIA", "WARNING") else st.info)
+                    fn = st.error if sev == "CRÍTICA" else (st.warning if sev in ("ALTA", "ADVERTENCIA") else st.info)
                     fn(f"**[{sev}] {a['code']}:** {a['detail']}")
         else:
             st.success("✅ Orbital subsystems nominal.")
